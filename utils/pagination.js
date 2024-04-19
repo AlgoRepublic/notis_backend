@@ -1,6 +1,9 @@
 const pagyParams = (page, perPage) => {
-  page = (parseInt(page, 10) || 1) - 1
+  page = parseInt(page, 10) || 1
   perPage = parseInt(perPage, 10) || 50
+
+  page = page < 1 ? 1 : page
+  perPage = perPage < 1 ? 50 : perPage
 
   return { page, perPage }
 }

@@ -30,16 +30,12 @@ const list = aysncMiddleware(async (req, res, next) => {
     sortQuery.name = 1
   }
 
-  console.log(sort)
-  console.log(sortAs)
-  console.log(sortQuery)
-
   const users = await connection
     .model('User')
     .find(query)
     .select({ name: 1, email: 1, roles: 1 })
     .sort(sortQuery)
-    .skip(page * perPage)
+    .skip((page - 1) * perPage)
     .limit(perPage)
     .lean()
 
