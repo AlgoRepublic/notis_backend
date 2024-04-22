@@ -41,21 +41,11 @@ const userSchema = new Schema(
   }
 )
 
-userSchema.pre('save', async function (next) {
-  // only hash the password if it has been modified (or is new)
-  if (this.isModified('password')) {
-    this.password = await encryptPassword(this.password)
-  }
-
-  return next()
-})
-
 userSchema.methods.generateAuthToken = function () {
   const maxAge = 3 * 24 * 60 * 60
   const token = jwt.sign(
     {
       _id: this._id,
-      role: this.role,
     },
     process.env.APP_JWT_KEY,
     {
