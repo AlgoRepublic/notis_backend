@@ -28,6 +28,7 @@ const initAdminDbConnection = async (DB_URL) => {
     console.log('admin  connection ok! : ' + db.name)
 
     db.model('User', require('../models/user'))
+    db.model('SubDomain', require('../models/subdomain'))
     return db
   } catch (error) {
     console.log('admin error', error)

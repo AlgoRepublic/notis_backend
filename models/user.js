@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const jwt = require('jsonwebtoken')
-const { encryptPassword } = require('../utils/password')
 
 const userSchema = new Schema(
   {
