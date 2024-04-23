@@ -18,7 +18,7 @@ app.use(
 app.use(express.json({ limit: '50mb' }))
 app.use(upload.any())
 
-app.use('/api/v1', vhost('localhost', apiRoutes))
+app.use('/api/v1', vhost(process.env.APP_HOST || 'localhost', apiRoutes))
 
 connectAllDb().then(() => {
   app.listen(process.env.APP_PORT, () => {
