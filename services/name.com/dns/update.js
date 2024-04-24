@@ -4,17 +4,19 @@ const { CustomError } = require('../../../utils/error')
 const { joiValidate, joiError } = require('../../../utils/joi')
 const { logError } = require('../../../utils/log')
 
-const create = async (params) => {
+const update = async (params) => {
   params = params || {}
 
   try {
-    const { host } = params
+    const { host, recordId } = params
 
     const schema = Joi.object({
+      recordId: Joi.number().required(),
       host: Joi.string().required(),
     })
 
     const { error } = await joiValidate(schema, {
+      recordId,
       host,
     })
 
@@ -23,8 +25,8 @@ const create = async (params) => {
     }
 
     try {
-      const response = await axios.post(
-        `${process.env.NAME_COM_API_HOST}/domains/${process.env.APP_HOST}/records`,
+      const response = await axios.put(
+        `${process.env.NAME_COM_API_HOST}/domains/${process.env.APP_HOST}/records/${recordId}`,
         {
           hostName: process.env.APP_HOST,
           host: host,
@@ -44,17 +46,17 @@ const create = async (params) => {
       )
 
       if (response.status !== 200) {
-        throw new CustomError('Failed to create DNS record')
+        throw new CustomError('Failed to update DNS record')
       }
 
       return response.data
     } catch (error) {
       logError(error?.message)
-      throw new CustomError('Failed to create DNS record')
+      throw new CustomError('Failed to update DNS record')
     }
   } catch (error) {
     throw new CustomError(error?.message)
   }
 }
 
-module.exports = create
+module.exports = update
