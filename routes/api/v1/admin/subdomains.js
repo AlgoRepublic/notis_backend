@@ -1,6 +1,7 @@
 const express = require('express')
 const {
   list,
+  show,
   create,
   update,
   destroy,
@@ -9,6 +10,7 @@ const {
 const app = express.Router()
 
 app.get('/', list)
+app.get('/:_id', show)
 app.post('/', create)
 app.put('/:_id', update)
 app.delete('/:_id', destroy)
