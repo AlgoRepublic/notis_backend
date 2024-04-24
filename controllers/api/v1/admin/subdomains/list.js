@@ -30,7 +30,7 @@ const list = aysncMiddleware(async (req, res, next) => {
   }
 
   if (ttl) {
-    query.ttl = { $regex: ttl, $options: 'i' }
+    query.ttl = ttl
   }
 
   if (
