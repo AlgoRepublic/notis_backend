@@ -6,6 +6,12 @@
       "name": "Notis Dev",
       "request": "launch",
       "type": "node-terminal"
+    },
+    {
+      "command": "npm run seed",
+      "name": "Notis Seed",
+      "request": "launch",
+      "type": "node-terminal"
     }
   ]
 }
