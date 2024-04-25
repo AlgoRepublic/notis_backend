@@ -10,7 +10,7 @@ const seedUsers = async (connection) => {
       {
         email: 'admin@admin.com',
         password: await encryptPassword('admin@123'),
-        role: ['admin'],
+        roles: ['admin'],
       },
       {
         upsert: true,
