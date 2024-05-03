@@ -73,6 +73,11 @@ const create = async (dbConnection, params) => {
     })
 
     await app.save()
+
+    await dbConnection
+      .model('SubDomain')
+      .updateOne({ _id: app.subDomain }, { $set: { app: app._id } })
+
     return app
   } catch (error) {
     throw new CustomError(error?.message)
