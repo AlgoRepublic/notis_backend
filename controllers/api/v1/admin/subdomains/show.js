@@ -23,10 +23,17 @@ const show = aysncMiddleware(async (req, res, next) => {
 
   const subDomain = await connection
     .model('SubDomain')
-    .findOne({
-      _id,
+    .findOne({ _id })
+    .populate({ path: 'app', select: { title: 1, description: 1 } })
+    .select({
+      recordId: 1,
+      domainName: 1,
+      host: 1,
+      fqdn: 1,
+      type: 1,
+      answer: 1,
+      ttl: 1,
     })
-    .select({ domainName: 1, host: 1, fqdn: 1, type: 1, answer: 1, ttl: 1 })
     .lean()
     .exec()
 

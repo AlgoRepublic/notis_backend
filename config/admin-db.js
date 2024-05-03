@@ -32,6 +32,7 @@ const initAdminDbConnection = async (DB_URL) => {
     db.model('Country', require('../models/country'))
     db.model('State', require('../models/state'))
     db.model('City', require('../models/city'))
+    db.model('App', require('../models/app'))
     return db
   } catch (error) {
     console.log('admin error', error)

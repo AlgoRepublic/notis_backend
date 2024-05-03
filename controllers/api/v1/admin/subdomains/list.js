@@ -47,7 +47,16 @@ const list = aysncMiddleware(async (req, res, next) => {
   const subDomains = await connection
     .model('SubDomain')
     .find(query)
-    .select({ domainName: 1, host: 1, fqdn: 1, type: 1, answer: 1, ttl: 1 })
+    .populate({ path: 'app', select: { title: 1, description: 1 } })
+    .select({
+      recordId: 1,
+      domainName: 1,
+      host: 1,
+      fqdn: 1,
+      type: 1,
+      answer: 1,
+      ttl: 1,
+    })
     .sort(sortQuery)
     .skip((page - 1) * perPage)
     .limit(perPage)

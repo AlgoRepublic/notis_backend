@@ -49,6 +49,10 @@ const subDomainSchema = new Schema(
       required: true,
       index: true,
     },
+    app: {
+      type: Schema.Types.ObjectId,
+      ref: 'App',
+    },
   },
   {
     timestamps: true,

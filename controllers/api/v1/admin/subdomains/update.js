@@ -7,19 +7,26 @@ const update = aysncMiddleware(async (req, res, next) => {
 
   const { _id } = req.params
   const { host } = req.body
-  const subDomain = await updateSubDomainService(connection, { _id, host })
+  let subDomain = await updateSubDomainService(connection, { _id, host })
 
-  return successResponse(res, 'Subdomain update successfully', {
-    subDomain: {
-      _id: subDomain._id,
-      recordId: subDomain.recordId,
-      domainName: subDomain.domainName,
-      host: subDomain.host,
-      fqdn: subDomain.fqdn,
-      type: subDomain.type,
-      answer: subDomain.answer,
-      ttl: subDomain.ttl,
-    },
+  subDomain = await connection
+    .model('SubDomain')
+    .findOne({ _id: subDomain._id })
+    .populate({ path: 'app', select: { title: 1, description: 1 } })
+    .select({
+      recordId: 1,
+      domainName: 1,
+      host: 1,
+      fqdn: 1,
+      type: 1,
+      answer: 1,
+      ttl: 1,
+    })
+    .lean()
+    .exec()
+
+  return successResponse(res, 'Subdomain updated successfully', {
+    subDomain,
   })
 })
 
