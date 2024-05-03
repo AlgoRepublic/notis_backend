@@ -1,6 +1,7 @@
 const Joi = require('joi')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
+const { saveFile } = require('../../utils/storage')
 
 const create = async (dbConnection, params) => {
   params = params || {}
@@ -16,6 +17,7 @@ const create = async (dbConnection, params) => {
       privacy_policy,
       terms_of_use,
       copy_right_claim,
+      logo,
     } = params
 
     const schema = Joi.object({
@@ -32,6 +34,7 @@ const create = async (dbConnection, params) => {
       privacy_policy: Joi.string().required(),
       terms_of_use: Joi.string().required(),
       copy_right_claim: Joi.string().required(),
+      logo: Joi.object().required(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -44,6 +47,7 @@ const create = async (dbConnection, params) => {
       privacy_policy,
       terms_of_use,
       copy_right_claim,
+      logo,
     })
 
     if (error) {
@@ -60,6 +64,8 @@ const create = async (dbConnection, params) => {
       throw new CustomError('Sub domain already used')
     }
 
+    const logoPath = await saveFile(logo, 'admin/apps/logo')
+
     const app = new (dbConnection.model('App'))({
       title,
       description,
@@ -70,6 +76,7 @@ const create = async (dbConnection, params) => {
       privacy_policy,
       terms_of_use,
       copy_right_claim,
+      logo: logoPath,
     })
 
     await app.save()

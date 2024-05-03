@@ -60,6 +60,11 @@ const appSchema = new Schema(
       required: true,
       trim: true,
     },
+    logo: {
+      type: String,
+      required: true,
+      trim: true,
+    },
   },
   {
     timestamps: true,

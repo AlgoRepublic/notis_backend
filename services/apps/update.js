@@ -1,7 +1,7 @@
 const Joi = require('joi')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
-const { connection } = require('mongoose')
+const { saveFile } = require('../../utils/storage')
 
 const update = async (dbConnection, params) => {
   params = params || {}
@@ -18,6 +18,7 @@ const update = async (dbConnection, params) => {
       privacy_policy,
       terms_of_use,
       copy_right_claim,
+      logo,
     } = params
 
     const schema = Joi.object({
@@ -35,6 +36,7 @@ const update = async (dbConnection, params) => {
       privacy_policy: Joi.string().optional(),
       terms_of_use: Joi.string().optional(),
       copy_right_claim: Joi.string().optional(),
+      logo: Joi.object().optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -48,6 +50,7 @@ const update = async (dbConnection, params) => {
       privacy_policy,
       terms_of_use,
       copy_right_claim,
+      logo,
     })
 
     if (error) {
@@ -116,6 +119,10 @@ const update = async (dbConnection, params) => {
 
     if (copy_right_claim !== undefined) {
       app.copy_right_claim = copy_right_claim
+    }
+
+    if (logo !== undefined) {
+      app.logo = await saveFile(logo, 'admin/apps/logo')
     }
 
     await app.save()

@@ -18,6 +18,8 @@ const update = aysncMiddleware(async (req, res, next) => {
     copy_right_claim,
   } = req.body
 
+  const { logo } = req.files
+
   let app = await updateAppService(connection, {
     _id,
     title,
@@ -29,6 +31,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     privacy_policy,
     terms_of_use,
     copy_right_claim,
+    logo,
   })
 
   app = await connection
@@ -46,6 +49,7 @@ const update = aysncMiddleware(async (req, res, next) => {
       privacy_policy: 1,
       terms_of_use: 1,
       copy_right_claim: 1,
+      logo: 1,
     })
     .lean()
     .exec()
