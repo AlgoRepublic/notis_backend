@@ -133,3 +133,4 @@ dist
 .pnp.*
 tmp/
 storage/uploads/
+storage/admin/
