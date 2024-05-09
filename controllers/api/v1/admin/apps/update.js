@@ -18,7 +18,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     copy_right_claim,
   } = req.body
 
-  const { logo } = req.files
+  const { logo } = req.files || {}
 
   let app = await updateAppService(connection, {
     _id,
