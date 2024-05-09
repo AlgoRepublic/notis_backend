@@ -9,7 +9,7 @@ const create = async (dbConnection, params) => {
   try {
     const User = await dbConnection.model('User')
 
-    const { _id, name, email, password, roles } = params
+    const { _id, name, email, password, roles, subDomains } = params
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).required(),
@@ -19,6 +19,7 @@ const create = async (dbConnection, params) => {
       roles: Joi.array()
         .items(Joi.string().valid('admin', 'creator'))
         .optional(),
+      subDomains: Joi.array().items(Joi.string().hex().length(24)).optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -27,6 +28,7 @@ const create = async (dbConnection, params) => {
       email,
       password,
       roles,
+      subDomains,
     })
 
     if (error) {
@@ -50,17 +52,21 @@ const create = async (dbConnection, params) => {
       _id: _id,
     }).exec()
 
-    if (user) {
+    if (name !== undefined) {
       user.name = name
     }
-    if (email) {
+    if (email !== undefined) {
       user.email = email
     }
-    if (password) {
+    if (password !== undefined) {
       user.password = await encryptPassword(password)
     }
-    if (roles) {
+    if (roles !== undefined) {
       user.roles = roles
+    }
+
+    if (subDomains !== undefined) {
+      user.subDomains = subDomains
     }
     await user.save()
 

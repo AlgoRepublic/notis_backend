@@ -41,6 +41,7 @@ const create = async (dbConnection, params) => {
         type: response.type,
       })
 
+      subDomain.dbURI = `${process.env.BASE_DB_URI}/mt_${subDomain._id}`
       await subDomain.save()
       return subDomain
     } catch (error) {

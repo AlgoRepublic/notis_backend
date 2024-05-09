@@ -33,6 +33,10 @@ const list = aysncMiddleware(async (req, res, next) => {
   const users = await connection
     .model('User')
     .find(query)
+    .populate({
+      path: 'subDomains',
+      select: { host: 1 },
+    })
     .select({ name: 1, email: 1, roles: 1 })
     .sort(sortQuery)
     .skip((page - 1) * perPage)

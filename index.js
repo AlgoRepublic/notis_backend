@@ -19,14 +19,17 @@ app.use(
 app.use(express.json({ limit: '50mb' }))
 app.use(
   fileUpload({
-    debug: true,
+    debug: false,
     parseNested: true,
     createParentPath: true,
     preserveExtension: true,
   })
 )
 
-app.use('/api/v1', vhost(process.env.APP_HOST || 'localhost', apiRoutes))
+app.use(
+  '/api/v1',
+  vhost(new RegExp(`([a-z0-9]*).?${process.env.APP_HOST}`), apiRoutes)
+)
 app.use('/storage', express.static(path.join(__dirname, './storage')))
 
 connectAllDb().then(() => {

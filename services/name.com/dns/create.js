@@ -44,6 +44,7 @@ const create = async (params) => {
       )
 
       if (response.status !== 200) {
+        logError(response)
         throw new CustomError('Failed to create DNS record')
       }
 

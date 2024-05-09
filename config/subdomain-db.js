@@ -23,24 +23,20 @@ mongoose.connection.on('disconnected', () => {
   console.log('Mongoose default connection disconnected')
 })
 
-const initAdminDbConnection = async (DB_URL) => {
+const initSubdomainDbConnection = async (DB_URL) => {
   try {
     const db = await mongoose.createConnection(DB_URL, clientOption).asPromise()
 
-    db.model('User', require('../models/user'))
-    db.model('SubDomain', require('../models/subdomain'))
-    db.model('Country', require('../models/country'))
-    db.model('State', require('../models/state'))
-    db.model('City', require('../models/city'))
-    db.model('App', require('../models/app'))
+    db.model('Post', require('../models/post'))
 
-    logInfo('Admin connection ok! : ' + db.name)
+    logInfo('SubDomain connection ok! : ' + db.name)
+
     return db
   } catch (error) {
-    logError('Admin connection error', error)
+    logError('SubDomain connection error', error)
   }
 }
 
 module.exports = {
-  initAdminDbConnection,
+  initSubdomainDbConnection,
 }
