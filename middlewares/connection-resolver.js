@@ -17,7 +17,7 @@ const resolveSubdomain = async (req, res, next) => {
     const vhost = req.vhost
     const subdomain = vhost['0']
 
-    if (subdomain === 'www' || subdomain === '') {
+    if (subdomain === 'www' || !subdomain) {
       return next()
     }
 

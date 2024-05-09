@@ -24,11 +24,11 @@ const login = aysncMiddleware(async (req, res, next) => {
   }
 
   const query = {}
-  if (req.subDomain !== 'www' && req.subDomain !== '') {
+  if (req.subDomain === 'www' || !req.subDomain) {
+    query.roles = 'admin'
+  } else {
     query.roles = 'creator'
     query.subDomains = req.subDomainId
-  } else {
-    query.roles = 'admin'
   }
 
   let user = await connection
