@@ -25,7 +25,6 @@ const show = aysncMiddleware(async (req, res, next) => {
     .model('Post')
     .findOne({ _id })
     .select({
-      type: 1,
       title: 1,
       description: 1,
       entity: 1,

@@ -6,11 +6,9 @@ const create = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { type, title, description, entity, location, url, createdBy } =
-      params
+    const { title, description, entity, location, url, createdBy } = params
 
     const schema = Joi.object({
-      type: Joi.string().valid('Job', 'Rental').required(),
       title: Joi.string().required(),
       description: Joi.string().required(),
       entity: Joi.string().required(),
@@ -20,7 +18,6 @@ const create = async (dbConnection, params) => {
     })
 
     const { error } = await joiValidate(schema, {
-      type,
       title,
       description,
       entity,
@@ -34,7 +31,6 @@ const create = async (dbConnection, params) => {
     }
 
     const post = new (dbConnection.model('Post'))({
-      type,
       title,
       description,
       entity,

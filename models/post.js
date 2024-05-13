@@ -3,12 +3,6 @@ const Schema = mongoose.Schema
 
 const postSchema = new Schema(
   {
-    type: {
-      type: String,
-      enum: ['Job', 'Rental'],
-      index: true,
-      required: true,
-    },
     title: {
       type: String,
       required: true,

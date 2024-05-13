@@ -5,14 +5,9 @@ const { pagyParams, pagyRes } = require('../../../../../utils/pagination')
 const list = aysncMiddleware(async (req, res, next) => {
   const connection = req.sdbConnection
   const { page, perPage } = pagyParams(req.query.page, req.query.perPage)
-  const { type, title, description, entity, location, url, sort, sortAs } =
-    req.query
+  const { title, description, entity, location, url, sort, sortAs } = req.query
   const query = {}
   const sortQuery = {}
-
-  if (type) {
-    query.type = type
-  }
 
   if (title) {
     query.title = { $regex: new RegExp(title, 'i') }
@@ -38,7 +33,7 @@ const list = aysncMiddleware(async (req, res, next) => {
     sort &&
     sortAs &&
     ['asc', 'desc'].includes(sortAs) &&
-    ['type', 'title', 'description', 'entity', 'location', 'url'].includes(sort)
+    ['title', 'description', 'entity', 'location', 'url'].includes(sort)
   ) {
     sortQuery[sort] = sortAs === 'asc' ? 1 : -1
   } else {
@@ -49,7 +44,6 @@ const list = aysncMiddleware(async (req, res, next) => {
     .model('Post')
     .find(query)
     .select({
-      type: 1,
       title: 1,
       description: 1,
       entity: 1,
