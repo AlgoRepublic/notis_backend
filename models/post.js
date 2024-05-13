@@ -34,6 +34,7 @@ const postSchema = new Schema(
       ref: 'User',
       required: true,
       index: true,
+      default: null,
     },
     updatedBy: {
       type: Schema.Types.ObjectId,

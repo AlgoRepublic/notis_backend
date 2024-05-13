@@ -19,11 +19,13 @@ const citySchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Country',
       index: true,
+      default: null,
     },
     state: {
       type: Schema.Types.ObjectId,
       ref: 'State',
       index: true,
+      default: null,
     },
   },
   {

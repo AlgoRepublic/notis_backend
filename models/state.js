@@ -25,6 +25,7 @@ const stateSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Country',
       index: true,
+      default: null,
     },
     cities: [
       {

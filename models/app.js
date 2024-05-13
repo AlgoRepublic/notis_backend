@@ -23,10 +23,12 @@ const appSchema = new Schema(
     subDomain: {
       type: Schema.Types.ObjectId,
       ref: 'SubDomain',
+      default: null,
     },
     country: {
       type: Schema.Types.ObjectId,
       ref: 'Country',
+      default: null,
     },
     color: {
       primary: {

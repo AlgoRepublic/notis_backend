@@ -57,6 +57,7 @@ const subDomainSchema = new Schema(
     app: {
       type: Schema.Types.ObjectId,
       ref: 'App',
+      default: null,
     },
   },
   {

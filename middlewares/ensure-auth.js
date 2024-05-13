@@ -3,7 +3,7 @@ const { errorResponse } = require('../utils/response')
 const { logError } = require('../utils/log')
 const { CustomError } = require('../utils/error')
 
-const ensureAuth = (roles) => {
+const ensureAuth = (allowedRoles) => {
   return async (req, res, next) => {
     const connection = req.dbConnection
 
@@ -20,14 +20,35 @@ const ensureAuth = (roles) => {
 
         if (!decoded?._id) throw new CustomError('Invalid authorization token')
 
+        if (!Array.isArray(allowedRoles)) {
+          allowedRoles = [allowedRoles]
+        }
+
         const query = { _id: decoded._id }
-        if (roles) {
-          query.roles = roles
+
+        if (req.subDomain === 'www' || !req.subDomain) {
+          query.roles = 'admin'
+        } else {
+          if (!req.subDomainId) {
+            throw new CustomError('Subdomain is not resolved')
+          }
+
+          query.roles = 'creator'
+          query.subDomains = req.subDomainId
         }
 
         const user = await connection.model('User').findOne(query).lean().exec()
 
         if (!user) throw new CustomError('Invalid authorization token')
+
+        const userRoles = user.roles || []
+        const matchedRoles = userRoles.filter((value) =>
+          allowedRoles.includes(value)
+        )
+
+        if (matchedRoles.length === 0) {
+          throw new CustomError('User does not have permission to access this')
+        }
 
         req.currentUser = user
 
