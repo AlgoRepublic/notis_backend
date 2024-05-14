@@ -33,9 +33,9 @@ const show = aysncMiddleware(async (req, res, next) => {
       color: 1,
       subDomain: 1,
       country: 1,
-      privacy_policy: 1,
-      terms_of_use: 1,
-      copy_right_claim: 1,
+      privacyPolicy: 1,
+      termsOfUse: 1,
+      copyRightClaim: 1,
       logo: 1,
     })
     .lean()

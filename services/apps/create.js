@@ -14,9 +14,9 @@ const create = async (dbConnection, params) => {
       subDomain,
       country,
       color,
-      privacy_policy,
-      terms_of_use,
-      copy_right_claim,
+      privacyPolicy,
+      termsOfUse,
+      copyRightClaim,
       logo,
     } = params
 
@@ -31,9 +31,9 @@ const create = async (dbConnection, params) => {
         secondary: Joi.string().required(),
         text: Joi.string().required(),
       }).required(),
-      privacy_policy: Joi.string().required(),
-      terms_of_use: Joi.string().required(),
-      copy_right_claim: Joi.string().required(),
+      privacyPolicy: Joi.string().required(),
+      termsOfUse: Joi.string().required(),
+      copyRightClaim: Joi.string().required(),
       logo: Joi.object().required(),
     })
 
@@ -44,9 +44,9 @@ const create = async (dbConnection, params) => {
       subDomain,
       country,
       color,
-      privacy_policy,
-      terms_of_use,
-      copy_right_claim,
+      privacyPolicy,
+      termsOfUse,
+      copyRightClaim,
       logo,
     })
 
@@ -73,9 +73,9 @@ const create = async (dbConnection, params) => {
       subDomain,
       country,
       color,
-      privacy_policy,
-      terms_of_use,
-      copy_right_claim,
+      privacyPolicy,
+      termsOfUse,
+      copyRightClaim,
       logo: logoPath,
     })
 

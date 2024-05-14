@@ -15,9 +15,9 @@ const update = async (dbConnection, params) => {
       subDomain,
       country,
       color,
-      privacy_policy,
-      terms_of_use,
-      copy_right_claim,
+      privacyPolicy,
+      termsOfUse,
+      copyRightClaim,
       logo,
     } = params
 
@@ -33,9 +33,9 @@ const update = async (dbConnection, params) => {
         secondary: Joi.string().optional(),
         text: Joi.string().optional(),
       }).optional(),
-      privacy_policy: Joi.string().optional(),
-      terms_of_use: Joi.string().optional(),
-      copy_right_claim: Joi.string().optional(),
+      privacyPolicy: Joi.string().optional(),
+      termsOfUse: Joi.string().optional(),
+      copyRightClaim: Joi.string().optional(),
       logo: Joi.object().optional(),
     })
 
@@ -47,9 +47,9 @@ const update = async (dbConnection, params) => {
       subDomain,
       country,
       color,
-      privacy_policy,
-      terms_of_use,
-      copy_right_claim,
+      privacyPolicy,
+      termsOfUse,
+      copyRightClaim,
       logo,
     })
 
@@ -109,16 +109,16 @@ const update = async (dbConnection, params) => {
       app.color.text = color.text
     }
 
-    if (privacy_policy !== undefined) {
-      app.privacy_policy = privacy_policy
+    if (privacyPolicy !== undefined) {
+      app.privacyPolicy = privacyPolicy
     }
 
-    if (terms_of_use !== undefined) {
-      app.terms_of_use = terms_of_use
+    if (termsOfUse !== undefined) {
+      app.termsOfUse = termsOfUse
     }
 
-    if (copy_right_claim !== undefined) {
-      app.copy_right_claim = copy_right_claim
+    if (copyRightClaim !== undefined) {
+      app.copyRightClaim = copyRightClaim
     }
 
     if (logo !== undefined) {

@@ -47,17 +47,17 @@ const appSchema = new Schema(
         trim: true,
       },
     },
-    privacy_policy: {
+    privacyPolicy: {
       type: String,
       required: true,
       trim: true,
     },
-    terms_of_use: {
+    termsOfUse: {
       type: String,
       required: true,
       trim: true,
     },
-    copy_right_claim: {
+    copyRightClaim: {
       type: String,
       required: true,
       trim: true,
