@@ -6,7 +6,7 @@ const info = aysncMiddleware(async (req, res, next) => {
 
   const app = await connection
     .model('App')
-    .findOne({ subDomainId: req.subDomainId })
+    .findOne({ subDomain: req.subDomainId })
     .select({
       title: 1,
       description: 1,
