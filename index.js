@@ -11,7 +11,7 @@ const apiRoutes = require('./routes/api')
 const { connectAllDb } = require('./utils/connection-manager')
 const app = express()
 
-app.use(cors())
+app.use(cors({ origin: '*' }))
 app.use(morgan('tiny'))
 app.use(
   express.urlencoded({ extended: true, limit: '50mb', parameterLimit: 50000 })
