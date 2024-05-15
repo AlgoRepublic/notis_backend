@@ -11,7 +11,7 @@ const update = async (dbConnection, params) => {
       _id,
       title,
       description,
-      app_type,
+      appType,
       subDomain,
       country,
       color,
@@ -25,7 +25,7 @@ const update = async (dbConnection, params) => {
       _id: Joi.string().hex().length(24).required(),
       title: Joi.string().optional(),
       description: Joi.string().optional(),
-      app_type: Joi.string().valid('Job', 'Rental').optional(),
+      appType: Joi.string().valid('Job', 'Rental').optional(),
       subDomain: Joi.string().hex().length(24).optional(),
       country: Joi.string().hex().length(24).optional(),
       color: Joi.object({
@@ -43,7 +43,7 @@ const update = async (dbConnection, params) => {
       _id,
       title,
       description,
-      app_type,
+      appType,
       subDomain,
       country,
       color,
@@ -71,8 +71,8 @@ const update = async (dbConnection, params) => {
       app.description = description
     }
 
-    if (app_type !== undefined) {
-      app.app_type = app_type
+    if (appType !== undefined) {
+      app.appType = appType
     }
 
     if (subDomain !== undefined) {

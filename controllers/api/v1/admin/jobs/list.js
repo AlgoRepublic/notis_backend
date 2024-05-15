@@ -40,8 +40,8 @@ const list = aysncMiddleware(async (req, res, next) => {
     sortQuery._id = -1
   }
 
-  const posts = await connection
-    .model('Post')
+  const jobs = await connection
+    .model('Job')
     .find(query)
     .select({
       title: 1,
@@ -55,10 +55,10 @@ const list = aysncMiddleware(async (req, res, next) => {
     .limit(perPage)
     .lean()
 
-  const count = await connection.model('Post').countDocuments(query)
-  const pagyPosts = pagyRes(posts, count, page, perPage)
+  const count = await connection.model('Job').countDocuments(query)
+  const pagyJobs = pagyRes(jobs, count, page, perPage)
 
-  return successResponse(res, 'Post List', { posts: pagyPosts })
+  return successResponse(res, 'Job List', { jobs: pagyJobs })
 })
 
 module.exports = list

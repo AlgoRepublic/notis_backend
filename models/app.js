@@ -15,7 +15,7 @@ const appSchema = new Schema(
       required: true,
       trim: true,
     },
-    app_type: {
+    appType: {
       type: String,
       required: true,
       enum: ['Job', 'Rental'],

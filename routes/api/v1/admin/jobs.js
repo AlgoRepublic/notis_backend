@@ -5,7 +5,7 @@ const {
   create,
   update,
   destroy,
-} = require('../../../../controllers/api/v1/admin/posts')
+} = require('../../../../controllers/api/v1/admin/jobs')
 const { ensureAuth } = require('../../../../middlewares/ensure-auth')
 
 const app = express.Router()

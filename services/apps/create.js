@@ -10,7 +10,7 @@ const create = async (dbConnection, params) => {
     const {
       title,
       description,
-      app_type,
+      appType,
       subDomain,
       country,
       color,
@@ -23,7 +23,7 @@ const create = async (dbConnection, params) => {
     const schema = Joi.object({
       title: Joi.string().required(),
       description: Joi.string().required(),
-      app_type: Joi.string().valid('Job', 'Rental').required(),
+      appType: Joi.string().valid('Job', 'Rental').required(),
       subDomain: Joi.string().hex().length(24).required(),
       country: Joi.string().hex().length(24).required(),
       color: Joi.object({
@@ -40,7 +40,7 @@ const create = async (dbConnection, params) => {
     const { error } = await joiValidate(schema, {
       title,
       description,
-      app_type,
+      appType,
       subDomain,
       country,
       color,
@@ -69,7 +69,7 @@ const create = async (dbConnection, params) => {
     const app = new (dbConnection.model('App'))({
       title,
       description,
-      app_type,
+      appType,
       subDomain,
       country,
       color,

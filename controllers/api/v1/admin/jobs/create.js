@@ -1,4 +1,4 @@
-const createPostService = require('../../../../../services/posts/create')
+const createJobService = require('../../../../../services/jobs/create')
 const { successResponse } = require('../../../../../utils/response')
 const { aysncMiddleware } = require('../../../../../middlewares/async')
 
@@ -6,7 +6,7 @@ const create = aysncMiddleware(async (req, res, next) => {
   const connection = req.sdbConnection
 
   const { title, description, entity, location, url } = req.body
-  let post = await createPostService(connection, {
+  let job = await createJobService(connection, {
     title,
     description,
     entity,
@@ -15,9 +15,9 @@ const create = aysncMiddleware(async (req, res, next) => {
     createdBy: req.currentUser._id.toString(),
   })
 
-  post = await connection
-    .model('Post')
-    .findOne({ _id: post._id })
+  job = await connection
+    .model('Job')
+    .findOne({ _id: job._id })
     .select({
       title: 1,
       description: 1,
@@ -28,7 +28,7 @@ const create = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Post created successfully', { post })
+  return successResponse(res, 'Job created successfully', { job })
 })
 
 module.exports = create

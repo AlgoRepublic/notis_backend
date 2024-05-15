@@ -1,4 +1,4 @@
-const updatePostService = require('../../../../../services/posts/update')
+const updateJobService = require('../../../../../services/jobs/update')
 const { successResponse } = require('../../../../../utils/response')
 const { aysncMiddleware } = require('../../../../../middlewares/async')
 
@@ -7,7 +7,7 @@ const update = aysncMiddleware(async (req, res, next) => {
 
   const { _id } = req.params
   const { title, description, entity, location, url } = req.body
-  let post = await updatePostService(connection, {
+  let job = await updateJobService(connection, {
     _id,
     title,
     description,
@@ -17,9 +17,9 @@ const update = aysncMiddleware(async (req, res, next) => {
     updatedBy: req.currentUser._id.toString(),
   })
 
-  post = await connection
-    .model('Post')
-    .findOne({ _id: post._id })
+  job = await connection
+    .model('Job')
+    .findOne({ _id: job._id })
     .select({
       title: 1,
       description: 1,
@@ -30,8 +30,8 @@ const update = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Post updated successfully', {
-    post,
+  return successResponse(res, 'Job updated successfully', {
+    job,
   })
 })
 

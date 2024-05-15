@@ -29,7 +29,7 @@ const show = aysncMiddleware(async (req, res, next) => {
     .select({
       title: 1,
       description: 1,
-      app_type: 1,
+      appType: 1,
       color: 1,
       subDomain: 1,
       country: 1,

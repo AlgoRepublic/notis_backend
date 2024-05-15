@@ -32,37 +32,37 @@ const update = async (dbConnection, params) => {
       throw new CustomError(joiError(error))
     }
 
-    const post = await dbConnection.model('Post').findOne({ _id }).exec()
+    const job = await dbConnection.model('Job').findOne({ _id }).exec()
 
-    if (!post) {
-      throw new CustomError('Post not found')
+    if (!job) {
+      throw new CustomError('Job not found')
     }
 
     if (title !== undefined) {
-      post.title = title
+      job.title = title
     }
 
     if (description !== undefined) {
-      post.description = description
+      job.description = description
     }
 
     if (entity !== undefined) {
-      post.entity = entity
+      job.entity = entity
     }
 
     if (location !== undefined) {
-      post.location = location
+      job.location = location
     }
 
     if (url !== undefined) {
-      post.url = url
+      job.url = url
     }
 
-    post.updatedBy = updatedBy
+    job.updatedBy = updatedBy
 
-    await post.save()
+    await job.save()
 
-    return post
+    return job
   } catch (error) {
     throw new CustomError(error?.message)
   }

@@ -8,7 +8,7 @@ const create = aysncMiddleware(async (req, res, next) => {
   const {
     title,
     description,
-    app_type,
+    appType,
     subDomain,
     country,
     color,
@@ -22,7 +22,7 @@ const create = aysncMiddleware(async (req, res, next) => {
   let app = await createAppService(connection, {
     title,
     description,
-    app_type,
+    appType,
     subDomain,
     country,
     color,
@@ -40,7 +40,7 @@ const create = aysncMiddleware(async (req, res, next) => {
     .select({
       title: 1,
       description: 1,
-      app_type: 1,
+      appType: 1,
       color: 1,
       subDomain: 1,
       country: 1,

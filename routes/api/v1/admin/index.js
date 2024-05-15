@@ -5,7 +5,7 @@ const subdomainsRouter = require('./subdomains')
 const countriesRouter = require('./countries')
 const citiesRouter = require('./cities')
 const appsRouter = require('./apps')
-const postsRouter = require('./posts')
+const jobsRouter = require('./jobs')
 
 const router = express.Router()
 
@@ -15,6 +15,6 @@ router.use('/subdomains', subdomainsRouter)
 router.use('/countries', countriesRouter)
 router.use('/cities', citiesRouter)
 router.use('/apps', appsRouter)
-router.use('/posts', postsRouter)
+router.use('/jobs', jobsRouter)
 
 module.exports = router

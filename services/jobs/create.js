@@ -30,7 +30,7 @@ const create = async (dbConnection, params) => {
       throw new CustomError(joiError(error))
     }
 
-    const post = new (dbConnection.model('Post'))({
+    const job = new (dbConnection.model('Job'))({
       title,
       description,
       entity,
@@ -39,9 +39,9 @@ const create = async (dbConnection, params) => {
       createdBy,
     })
 
-    await post.save()
+    await job.save()
 
-    return post
+    return job
   } catch (error) {
     throw new CustomError(error?.message)
   }

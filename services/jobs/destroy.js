@@ -18,13 +18,13 @@ const destroy = async (dbConnection, params) => {
       throw new CustomError(joiError(error))
     }
 
-    const post = await dbConnection.model('Post').findOne({ _id }).exec()
+    const job = await dbConnection.model('Job').findOne({ _id }).exec()
 
-    if (!post) {
-      throw new CustomError('Post not found')
+    if (!job) {
+      throw new CustomError('Job not found')
     }
 
-    await post.deleteOne()
+    await job.deleteOne()
 
     return true
   } catch (error) {

@@ -21,8 +21,8 @@ const show = aysncMiddleware(async (req, res, next) => {
     throw new CustomError(joiError(error))
   }
 
-  const post = await connection
-    .model('Post')
+  const job = await connection
+    .model('Job')
     .findOne({ _id })
     .select({
       title: 1,
@@ -34,8 +34,8 @@ const show = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Post info', {
-    post,
+  return successResponse(res, 'Job info', {
+    job,
   })
 })
 
