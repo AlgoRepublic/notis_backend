@@ -29,6 +29,7 @@ const list = aysncMiddleware(async (req, res, next) => {
       entity: 1,
       location: 1,
       url: 1,
+      createdAt: 1,
     })
     .sort(sortQuery)
     .skip((page - 1) * perPage)
