@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { index } = require('./app')
 const Schema = mongoose.Schema
 
 const jobSchema = new Schema(
@@ -6,14 +7,19 @@ const jobSchema = new Schema(
     title: {
       type: String,
       required: true,
+      trim: true,
+      index: true,
     },
     description: {
       type: String,
       required: true,
+      trim: true,
     },
     entity: {
       type: String,
       required: true,
+      trim: true,
+      index: true,
     },
     location: {
       type: String,

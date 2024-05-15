@@ -8,6 +8,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       trim: true,
+      index: true,
     },
     email: {
       type: String,
@@ -28,11 +29,6 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
-    },
-    deleted_at: {
-      type: Date,
-      default: null,
-      index: true,
     },
     subDomains: [
       {

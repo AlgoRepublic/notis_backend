@@ -1,4 +1,3 @@
-const { required } = require('joi')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
@@ -19,16 +18,19 @@ const appSchema = new Schema(
       type: String,
       required: true,
       enum: ['Job', 'Rental'],
+      index: true,
     },
     subDomain: {
       type: Schema.Types.ObjectId,
       ref: 'SubDomain',
       default: null,
+      index: true,
     },
     country: {
       type: Schema.Types.ObjectId,
       ref: 'Country',
       default: null,
+      index: true,
     },
     color: {
       primary: {
