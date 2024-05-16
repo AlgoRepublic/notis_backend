@@ -22,7 +22,7 @@ const create = async (dbConnection, params) => {
 
     const schema = Joi.object({
       title: Joi.string().required(),
-      description: Joi.string().required(),
+      description: Joi.string().optional(),
       appType: Joi.string().valid('Job', 'Rental').required(),
       subDomain: Joi.string().hex().length(24).required(),
       country: Joi.string().hex().length(24).required(),
