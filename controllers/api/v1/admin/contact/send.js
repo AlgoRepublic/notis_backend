@@ -1,7 +1,7 @@
 const { aysncMiddleware } = require('../../../../../middlewares/async')
 const { sendEmail } = require('../../../../../utils/email')
 
-const create = aysncMiddleware(async (req, res, next) => {
+const send = aysncMiddleware(async (req, res, next) => {
   const { email, message } = req.body
 
   const emailOptions = {
@@ -14,4 +14,4 @@ const create = aysncMiddleware(async (req, res, next) => {
   await sendEmail(res, emailOptions)
 })
 
-module.exports = create
+module.exports = send
