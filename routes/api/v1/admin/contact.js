@@ -1,7 +1,3 @@
-
-
-
-
 const express = require('express')
 
 const { create } = require('../../../../controllers/api/v1/admin/contact')
