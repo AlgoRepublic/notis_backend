@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { index } = require('./app')
 const Schema = mongoose.Schema
 
 const jobSchema = new Schema(

@@ -28,6 +28,7 @@ const initSubdomainDbConnection = async (DB_URL) => {
     const db = await mongoose.createConnection(DB_URL, clientOption).asPromise()
 
     db.model('Job', require('../models/job'))
+    db.model('Device', require('../models/device'))
 
     logInfo('SubDomain connection ok! : ' + db.name)
 
