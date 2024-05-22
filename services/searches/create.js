@@ -48,6 +48,13 @@ const create = async (dbConnection, params) => {
       }
     )
 
+    await dbConnection
+      .model('Device')
+      .findOneAndUpdate(
+        { _id: device },
+        { $addToSet: { searches: search._id } }
+      )
+
     return search
   } catch (error) {
     throw new CustomError(error?.message)
