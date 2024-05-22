@@ -15,6 +15,12 @@ const deviceSchema = new Schema(
       default: false,
       index: true,
     },
+    searches: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Search',
+      },
+    ],
   },
   {
     timestamps: true,
