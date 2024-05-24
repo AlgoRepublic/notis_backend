@@ -5,17 +5,22 @@ const { pagyParams, pagyRes } = require('../../../../../utils/pagination')
 const list = aysncMiddleware(async (req, res, next) => {
   const connection = req.sdbConnection
   const { page, perPage } = pagyParams(req.query.page, req.query.perPage)
-  const { search } = req.query
+  const { title, location } = req.query
   const query = {}
   const sortQuery = {}
 
-  if (search) {
-    query.$or = [
-      { title: { $regex: new RegExp(search, 'i') } },
-      { description: { $regex: new RegExp(search, 'i') } },
-      { entity: { $regex: new RegExp(search, 'i') } },
-      { location: { $regex: new RegExp(search, 'i') } },
-    ]
+  if (title || location) {
+    query.$or = []
+  }
+
+  if (title) {
+    query.$or.push({ title: { $regex: new RegExp(title, 'i') } })
+    query.$or.push({ description: { $regex: new RegExp(title, 'i') } })
+    query.$or.push({ entity: { $regex: new RegExp(title, 'i') } })
+  }
+
+  if (location) {
+    query.$or.push({ location: { $regex: new RegExp(location, 'i') } })
   }
 
   sortQuery._id = -1
