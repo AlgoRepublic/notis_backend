@@ -7,6 +7,7 @@ const citiesRouter = require('./cities')
 const appsRouter = require('./apps')
 const jobsRouter = require('./jobs')
 const contactRouter = require('./contact')
+const admobRouter = require('./admob')
 
 const router = express.Router()
 
@@ -18,5 +19,5 @@ router.use('/cities', citiesRouter)
 router.use('/apps', appsRouter)
 router.use('/jobs', jobsRouter)
 router.use('/contact', contactRouter)
-
+router.use('/admob', admobRouter)
 module.exports = router
