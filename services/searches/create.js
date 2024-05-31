@@ -9,8 +9,8 @@ const create = async (dbConnection, params) => {
     const { title, location, device } = params
 
     const schema = Joi.object({
-      title: Joi.string().optional(),
-      location: Joi.string().optional(),
+      title: Joi.string().allow('').optional(),
+      location: Joi.string().allow('').optional(),
       device: Joi.string().hex().length(24).required(),
     })
 
@@ -25,7 +25,7 @@ const create = async (dbConnection, params) => {
     }
 
     if (!title && !location) {
-      throw new CustomError('Title or location is required')
+      throw new CustomError('Title or Location is required')
     }
 
     const search = await dbConnection.model('Search').findOneAndUpdate(

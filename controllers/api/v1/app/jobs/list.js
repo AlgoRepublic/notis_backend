@@ -10,17 +10,21 @@ const list = aysncMiddleware(async (req, res, next) => {
   const sortQuery = {}
 
   if (title || location) {
-    query.$or = []
+    query.$and = []
   }
 
   if (title) {
-    query.$or.push({ title: { $regex: new RegExp(title, 'i') } })
-    query.$or.push({ description: { $regex: new RegExp(title, 'i') } })
-    query.$or.push({ entity: { $regex: new RegExp(title, 'i') } })
+    query.$and.push({
+      $or: [
+        { title: { $regex: new RegExp(title, 'i') } },
+        { description: { $regex: new RegExp(title, 'i') } },
+        { entity: { $regex: new RegExp(title, 'i') } },
+      ],
+    })
   }
 
   if (location) {
-    query.$or.push({ location: { $regex: new RegExp(location, 'i') } })
+    query.$and.push({ location: { $regex: new RegExp(location, 'i') } })
   }
 
   sortQuery._id = -1
