@@ -3,9 +3,6 @@ const { sendEmail } = require('../../../../../utils/email')
 
 const send = aysncMiddleware(async (req, res, next) => {
     const { name, email, subject, message } = req.body
-
-
-
     const Textmessage = `<div style="color:#000000"> 
                             <div style="display:flex;">
                                 <div style="min-width:8%"><strong>Name : </strong></div>
@@ -24,7 +21,7 @@ const send = aysncMiddleware(async (req, res, next) => {
                                 <div>${message}</div>
                             </div>     
                         <div>
-    `;
+    `
 
     const emailOptions = {
         subject: 'Notis App Contact ',
