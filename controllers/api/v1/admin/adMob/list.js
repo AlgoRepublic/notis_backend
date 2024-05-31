@@ -29,7 +29,7 @@ const list = aysncMiddleware(async (req, res, next) => {
   const adMob = await connection
     .model('AdMob')
     .find(query)
-    .select({ detail: 1, adType: 1 })
+    .select({ code: 1, adType: 1 })
     .sort(sortQuery)
     .skip((page - 1) * perPage)
     .limit(perPage)
