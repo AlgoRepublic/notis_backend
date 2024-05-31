@@ -33,6 +33,7 @@ const initAdminDbConnection = async (DB_URL) => {
     db.model('State', require('../models/state'))
     db.model('City', require('../models/city'))
     db.model('App', require('../models/app'))
+    db.model('AdMob', require('../models/adMob'))
 
     logInfo('Admin connection ok! : ' + db.name)
     return db
