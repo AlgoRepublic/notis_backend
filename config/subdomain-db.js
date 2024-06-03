@@ -10,17 +10,17 @@ const clientOption = {
 // CONNECTION EVENTS
 // When successfully connected
 mongoose.connection.on('connected', () => {
-  console.log('Mongoose default connection open')
+  logInfo('Mongoose default connection open')
 })
 
 // If the connection throws an error
 mongoose.connection.on('error', (err) => {
-  console.log('Mongoose default connection error: ' + err)
+  logInfo('Mongoose default connection error: ' + err)
 })
 
 // When the connection is disconnected
 mongoose.connection.on('disconnected', () => {
-  console.log('Mongoose default connection disconnected')
+  logInfo('Mongoose default connection disconnected')
 })
 
 const initSubdomainDbConnection = async (DB_URL) => {
@@ -30,6 +30,7 @@ const initSubdomainDbConnection = async (DB_URL) => {
     db.model('Job', require('../models/job'))
     db.model('Device', require('../models/device'))
     db.model('Search', require('../models/search'))
+    db.model('Alert', require('../models/alert'))
 
     logInfo('SubDomain connection ok! : ' + db.name)
 

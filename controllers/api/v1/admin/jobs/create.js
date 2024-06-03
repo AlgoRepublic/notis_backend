@@ -13,6 +13,7 @@ const create = aysncMiddleware(async (req, res, next) => {
     location,
     url,
     createdBy: req.currentUser._id.toString(),
+    subDomain: req.subDomain,
   })
 
   job = await connection

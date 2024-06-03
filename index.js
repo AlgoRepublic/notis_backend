@@ -8,7 +8,10 @@ const morgan = require('morgan')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
 const apiRoutes = require('./routes/api')
+const queue = require('./utils/bull')
 const { connectAllDb } = require('./utils/connection-manager')
+const { firebaseInitialize } = require('./utils/firebase')
+const { logInfo } = require('./utils/log')
 const app = express()
 
 app.use(cors({ origin: '*' }))
@@ -33,8 +36,11 @@ app.use(
 app.use('/storage', express.static(path.join(__dirname, './storage')))
 
 connectAllDb().then(() => {
-  app.listen(process.env.APP_PORT, () => {
-    console.log(
+  app.listen(process.env.APP_PORT, async () => {
+    firebaseInitialize()
+    queue.process()
+
+    logInfo(
       `App listening on port ${process.env.APP_PORT} in ${process.env.NODE_ENV} environment`
     )
   })

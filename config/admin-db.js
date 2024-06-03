@@ -10,17 +10,17 @@ const clientOption = {
 // CONNECTION EVENTS
 // When successfully connected
 mongoose.connection.on('connected', () => {
-  console.log('Mongoose default connection open')
+  logInfo('Mongoose default connection open')
 })
 
 // If the connection throws an error
 mongoose.connection.on('error', (err) => {
-  console.log('Mongoose default connection error: ' + err)
+  logInfo('Mongoose default connection error: ' + err)
 })
 
 // When the connection is disconnected
 mongoose.connection.on('disconnected', () => {
-  console.log('Mongoose default connection disconnected')
+  logInfo('Mongoose default connection disconnected')
 })
 
 const initAdminDbConnection = async (DB_URL) => {

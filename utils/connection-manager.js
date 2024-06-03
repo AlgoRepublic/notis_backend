@@ -17,7 +17,7 @@ const connectAllDb = async () => {
       .lean()
       .exec()
   } catch (e) {
-    console.log('connectAllDb error', e)
+    logInfo('connectAllDb error', e)
     return
   }
 
