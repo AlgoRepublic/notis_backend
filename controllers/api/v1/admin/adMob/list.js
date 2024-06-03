@@ -10,7 +10,7 @@ const list = aysncMiddleware(async (req, res, next) => {
   const sortQuery = {}
 
   if (adType) {
-    query.adType = adType
+    query.adType = { $regex: code, $options: 'i' }
   }
   if (code) {
     query.code = { $regex: code, $options: 'i' }
