@@ -6,7 +6,16 @@ const update = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { _id, title, description, entity, location, url, updatedBy } = params
+    const {
+      _id,
+      title,
+      description,
+      entity,
+      location,
+      url,
+      updatedBy,
+      subDomainId,
+    } = params
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).optional(),
@@ -16,6 +25,7 @@ const update = async (dbConnection, params) => {
       location: Joi.string().optional(),
       url: Joi.string().optional(),
       updatedBy: Joi.string().hex().length(24).required(),
+      subDomainId: Joi.string().hex().length(24).required(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -26,6 +36,7 @@ const update = async (dbConnection, params) => {
       location,
       url,
       updatedBy,
+      subDomainId,
     })
 
     if (error) {
@@ -58,9 +69,11 @@ const update = async (dbConnection, params) => {
       job.url = url
     }
 
+    job.subDomain = subDomainId
     job.updatedBy = updatedBy
 
     await job.save()
+    await job.index({ index: job.generateIndexName() })
 
     return job
   } catch (error) {

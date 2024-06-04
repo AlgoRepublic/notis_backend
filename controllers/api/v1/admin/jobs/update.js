@@ -15,6 +15,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     location,
     url,
     updatedBy: req.currentUser._id.toString(),
+    subDomainId: req.subDomainId.toString(),
   })
 
   job = await connection

@@ -2,13 +2,22 @@ const Joi = require('joi')
 const queue = require('../../utils/bull')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
+const { logError } = require('../../utils/log')
 
 const create = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { title, description, entity, location, url, createdBy, subDomain } =
-      params
+    const {
+      title,
+      description,
+      entity,
+      location,
+      url,
+      createdBy,
+      subDomain,
+      subDomainId,
+    } = params
 
     const schema = Joi.object({
       title: Joi.string().required(),
@@ -18,6 +27,7 @@ const create = async (dbConnection, params) => {
       url: Joi.string().required(),
       createdBy: Joi.string().hex().length(24).required(),
       subDomain: Joi.string().required(),
+      subDomainId: Joi.string().hex().length(24).required(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -28,6 +38,7 @@ const create = async (dbConnection, params) => {
       url,
       createdBy,
       subDomain,
+      subDomainId,
     })
 
     if (error) {
@@ -41,14 +52,17 @@ const create = async (dbConnection, params) => {
       location,
       url,
       createdBy,
+      subDomain: subDomainId,
     })
 
     await job.save()
+    await job.index({ index: job.generateIndexName() })
 
     queue.add('sendJobAlert', { subDomain, jobId: job._id })
 
     return job
   } catch (error) {
+    logError(error)
     throw new CustomError(error?.message)
   }
 }
