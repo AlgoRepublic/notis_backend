@@ -28,7 +28,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "seed": "node db/seed.js",
-    "prettier": "prettier --write \"**/*.js\""
+    "prettier": "prettier --write \"**/*.js\"",
+    "sync-elasticsearch": "node db/elasticsearch.js"
   },
   "devDependencies": {
     "nodemon": "^2.0.22",
