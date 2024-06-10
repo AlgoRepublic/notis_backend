@@ -73,7 +73,7 @@ const update = async (dbConnection, params) => {
     job.updatedBy = updatedBy
 
     await job.save()
-    await job.index({ index: job.generateIndexName() })
+    await job.addIndex()
 
     return job
   } catch (error) {

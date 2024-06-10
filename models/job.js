@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
-const mongoosastic = require('mongoosastic')
-const { esClient } = require('../config/elasticsearch')
+const { elasticsearchPlugin } = require('./helpers/elasticsearch')
 
 const Schema = mongoose.Schema
 
@@ -87,10 +86,6 @@ const jobSchema = new Schema(
   }
 )
 
-jobSchema.methods.generateIndexName = function () {
-  return `jobs-${this.subDomain}`
-}
-
-jobSchema.plugin(mongoosastic, { indexAutomatically: false, esClient })
+elasticsearchPlugin(jobSchema)
 
 module.exports = jobSchema

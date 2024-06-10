@@ -15,7 +15,7 @@ mongoose.connection.on('connected', () => {
 
 // If the connection throws an error
 mongoose.connection.on('error', (err) => {
-  logInfo('Mongoose default connection error: ' + err)
+  logError('Mongoose default connection error: ', err)
 })
 
 // When the connection is disconnected

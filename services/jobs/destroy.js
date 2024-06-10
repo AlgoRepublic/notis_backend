@@ -24,6 +24,7 @@ const destroy = async (dbConnection, params) => {
       throw new CustomError('Job not found')
     }
 
+    await job.removeIndex()
     await job.deleteOne()
 
     return true

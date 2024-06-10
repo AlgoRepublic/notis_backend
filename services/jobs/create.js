@@ -56,7 +56,7 @@ const create = async (dbConnection, params) => {
     })
 
     await job.save()
-    await job.index({ index: job.generateIndexName() })
+    await job.addIndex()
 
     queue.add('sendJobAlert', { subDomain, jobId: job._id })
 
