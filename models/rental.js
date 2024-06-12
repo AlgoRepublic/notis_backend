@@ -27,6 +27,14 @@ const jobSchema = new Schema(
       es_indexed: true,
       es_type: 'text',
     },
+    location: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+      es_indexed: true,
+      es_type: 'text',
+    },
     url: {
       type: String,
       required: true,

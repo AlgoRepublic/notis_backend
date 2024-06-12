@@ -6,6 +6,7 @@ const searchesRouter = require('./searches')
 const contactRouter = require('./contact')
 const alertsRouter = require('./alerts')
 const adMobRouter = require('./adMob')
+const rentalsRouter = require('./rentals')
 
 const router = express.Router()
 
@@ -16,5 +17,6 @@ router.use('/searches', searchesRouter)
 router.use('/contact', contactRouter)
 router.use('/alerts', alertsRouter)
 router.use('/adMob', adMobRouter)
+router.use('/rentals', rentalsRouter)
 
 module.exports = router
