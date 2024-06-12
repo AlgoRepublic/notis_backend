@@ -31,6 +31,7 @@ const initSubdomainDbConnection = async (DB_URL) => {
     db.model('Device', require('../models/device'))
     db.model('Search', require('../models/search'))
     db.model('Alert', require('../models/alert'))
+    db.model('Rental', require('../models/rental'))
 
     logInfo('SubDomain connection ok! : ' + db.name)
 
