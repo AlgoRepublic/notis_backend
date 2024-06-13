@@ -21,6 +21,19 @@ const list = aysncMiddleware(async (req, res, next) => {
         createdAt: 1,
       },
     })
+    .populate({
+      path: 'rental',
+      select: {
+        title: 1,
+        description: 1,
+        entity: 1,
+        url: 1,
+        summary: 1,
+        price: 1,
+        thumbnails: 1,
+        createdAt: 1,
+      },
+    })
     .select({
       viewed: 1,
       createdAt: 1,

@@ -23,6 +23,12 @@ const alertSchema = new Schema(
       index: true,
       default: null,
     },
+    rental: {
+      type: Schema.Types.ObjectId,
+      ref: 'Rental',
+      index: true,
+      default: null,
+    },
   },
   {
     timestamps: true,

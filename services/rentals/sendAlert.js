@@ -12,7 +12,7 @@ const sendAlert = async (dbConnection, params) => {
       throw new CustomError('No db connection')
     }
 
-    const { _id } = params
+    const { _id, subDomainId } = params
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).required(),
@@ -29,44 +29,62 @@ const sendAlert = async (dbConnection, params) => {
     const searches = await dbConnection.model('Search').find().lean()
 
     for (const search of searches) {
-      const query = {}
-
-      if (search.title || search.location) {
-        query.$and = []
-      } else {
+      if (!search.title && !search.location) {
         continue
       }
 
-      if (search.title) {
-        query.$and.push({
-          $or: [
-            { title: { $regex: new RegExp(search.title, 'i') } },
-            { description: { $regex: new RegExp(search.title, 'i') } },
-            { entity: { $regex: new RegExp(search.title, 'i') } },
-          ],
-        })
-      }
+      const rentals = await dbConnection.model('Rental').esSearch(
+        {
+          query: {
+            bool: {
+              must: [
+                {
+                  ids: {
+                    values: [_id],
+                  },
+                },
+                ...(search.title
+                  ? [
+                      {
+                        multi_match: {
+                          query: search.title,
+                          fields: ['title', 'description', 'entity'],
+                          fuzziness: 'auto',
+                        },
+                      },
+                    ]
+                  : []),
+                ...(search.location
+                  ? [
+                      {
+                        match: {
+                          location: {
+                            query: search.location,
+                            fuzziness: 'auto',
+                          },
+                        },
+                      },
+                    ]
+                  : []),
+              ],
+            },
+          },
+        },
+        {
+          index: dbConnection.model('Rental').indexName(subDomainId),
+        }
+      )
 
-      if (search.location) {
-        query.$and.push({
-          location: { $regex: new RegExp(search.location, 'i') },
-        })
-      }
+      if (rentals.statusCode === 200 && rentals.body.hits.total > 0) {
+        const rental = rentals.body.hits.hits[0]
 
-      const job = await dbConnection
-        .model('Job')
-        .findOne({ _id, ...query })
-        .lean()
-        .exec()
-
-      if (job) {
         const alert = await dbConnection.model('Alert').findOneAndUpdate(
           {
-            job: job._id,
+            rental: rental._id,
             device: search.device,
           },
           {
-            job: job._id,
+            rental: rental._id,
             device: search.device,
           },
           {
@@ -89,12 +107,12 @@ const sendAlert = async (dbConnection, params) => {
 
             const message = {
               data: {
-                jobId: job._id.toString(),
-                url: job.url,
+                rentalId: rental._id,
+                url: rental._source.url,
               },
               notification: {
-                title: 'Job Alert',
-                body: job.title,
+                title: 'Rental Alert',
+                body: rental._source.title,
               },
               token: device.fcmToken,
             }

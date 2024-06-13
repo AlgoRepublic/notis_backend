@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const queue = require('../../utils/bull')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { logError } = require('../../utils/log')
@@ -94,7 +95,11 @@ const create = async (dbConnection, params) => {
     await rental.save()
     await rental.addIndex()
 
-    // queue.add('sendRentalAlert', { subDomain, rentalId: rental._id })
+    queue.add('sendRentalAlert', {
+      subDomain,
+      subDomainId,
+      rentalId: rental._id,
+    })
 
     return rental
   } catch (error) {
