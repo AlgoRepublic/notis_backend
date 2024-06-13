@@ -74,6 +74,7 @@ const list = aysncMiddleware(async (req, res, next) => {
       description: 1,
       entity: 1,
       url: 1,
+      location: 1,
       summary: 1,
       price: 1,
       thumbnails: 1,

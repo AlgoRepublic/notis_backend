@@ -6,6 +6,10 @@ const esClient = new Client({
     username: process.env.ELASTICSEARCH_USERNAME,
     password: process.env.ELASTICSEARCH_PASSWORD,
   },
+  ssl: {
+    ca: process.env.ELASTICSEARCH_SSL_CA,
+    rejectUnauthorized: true,
+  },
 })
 
 module.exports = {
