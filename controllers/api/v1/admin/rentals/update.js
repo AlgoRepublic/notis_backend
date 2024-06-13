@@ -28,6 +28,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     entity,
     location,
     url,
+    location: 1,
     price,
     summary,
     thumbnails: allThumbnails,
