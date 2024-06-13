@@ -22,7 +22,7 @@ const show = aysncMiddleware(async (req, res, next) => {
   }
 
   const rental = await connection
-    .model('Rentail')
+    .model('Rental')
     .findOne({ _id })
     .select({
       title: 1,
@@ -36,7 +36,7 @@ const show = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Rentail info', {
+  return successResponse(res, 'Rental info', {
     rental,
   })
 })
