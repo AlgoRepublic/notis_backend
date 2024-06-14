@@ -48,7 +48,14 @@ const sendAlert = async (dbConnection, params) => {
                       {
                         multi_match: {
                           query: search.title,
-                          fields: ['title', 'description', 'entity'],
+                          fields: [
+                            'title',
+                            'description',
+                            'entity',
+                            'location',
+                            'summary',
+                            'price',
+                          ],
                           fuzziness: 'auto',
                         },
                       },
