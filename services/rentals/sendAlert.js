@@ -52,7 +52,6 @@ const sendAlert = async (dbConnection, params) => {
                             'title',
                             'description',
                             'entity',
-                            'location',
                             'summary',
                             'price',
                           ],
