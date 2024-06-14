@@ -21,24 +21,10 @@ const list = aysncMiddleware(async (req, res, next) => {
               ...(title
                 ? [
                     {
-                      bool: {
-                        should: [
-                          {
-                            multi_match: {
-                              query: title,
-                              fields: ['title', 'description', 'entity'],
-                            },
-                          },
-                          {
-                            bool: {
-                              should: [
-                                { wildcard: { title: `*${title}*` } },
-                                { wildcard: { description: `*${title}*` } },
-                                { wildcard: { entity: `*${title}*` } },
-                              ],
-                            },
-                          },
-                        ],
+                      multi_match: {
+                        query: title,
+                        fields: ['title', 'description', 'entity'],
+                        fuzziness: 'auto',
                       },
                     },
                   ]
@@ -46,17 +32,11 @@ const list = aysncMiddleware(async (req, res, next) => {
               ...(location
                 ? [
                     {
-                      bool: {
-                        should: [
-                          {
-                            match: {
-                              location: 'location',
-                            },
-                          },
-                          {
-                            wildcard: { location: `*${location}*` },
-                          },
-                        ],
+                      match: {
+                        location: {
+                          query: location,
+                          fuzziness: 'auto',
+                        },
                       },
                     },
                   ]
@@ -65,7 +45,7 @@ const list = aysncMiddleware(async (req, res, next) => {
           },
         },
       },
-      { index: `jobs-${req.subDomainId}` }
+      { index: connection.model('Job').indexName(req.subDomainId) }
     )
 
     jobs = esJobs.body.hits.hits.map((job) => {

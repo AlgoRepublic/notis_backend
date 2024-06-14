@@ -21,32 +21,16 @@ const list = aysncMiddleware(async (req, res, next) => {
               ...(title
                 ? [
                     {
-                      bool: {
-                        should: [
-                          {
-                            multi_match: {
-                              query: title,
-                              fields: [
-                                'title',
-                                'description',
-                                'entity',
-                                'summary',
-                                'price',
-                              ],
-                            },
-                          },
-                          {
-                            bool: {
-                              should: [
-                                { wildcard: { title: `*${title}*` } },
-                                { wildcard: { description: `*${title}*` } },
-                                { wildcard: { entity: `*${title}*` } },
-                                { wildcard: { summary: `*${title}*` } },
-                                { wildcard: { price: `*${title}*` } },
-                              ],
-                            },
-                          },
+                      multi_match: {
+                        query: title,
+                        fields: [
+                          'title',
+                          'description',
+                          'entity',
+                          'summary',
+                          'price',
                         ],
+                        fuzziness: 'auto',
                       },
                     },
                   ]
@@ -54,17 +38,11 @@ const list = aysncMiddleware(async (req, res, next) => {
               ...(location
                 ? [
                     {
-                      bool: {
-                        should: [
-                          {
-                            match: {
-                              location: 'location',
-                            },
-                          },
-                          {
-                            wildcard: { location: `*${location}*` },
-                          },
-                        ],
+                      match: {
+                        location: {
+                          query: location,
+                          fuzziness: 'auto',
+                        },
                       },
                     },
                   ]
@@ -73,7 +51,7 @@ const list = aysncMiddleware(async (req, res, next) => {
           },
         },
       },
-      { index: `rentals-${req.subDomainId}` }
+      { index: connection.model('Rental').indexName(req.subDomainId) }
     )
 
     rentals = esRentals.body.hits.hits.map((rental) => {
