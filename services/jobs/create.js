@@ -58,7 +58,15 @@ const create = async (dbConnection, params) => {
     await job.save()
     await job.addIndex()
 
-    queue.add('sendJobAlert', { subDomain, jobId: job._id })
+    queue.add(
+      'sendJobAlert',
+      {
+        subDomain,
+        subDomainId,
+        jobId: job._id,
+      },
+      { delay: 60000 }
+    )
 
     return job
   } catch (error) {

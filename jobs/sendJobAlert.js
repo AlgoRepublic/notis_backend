@@ -6,9 +6,10 @@ module.exports = {
   options: {},
   async handle(job, done) {
     try {
-      const { subDomain, jobId } = job.data
+      const { subDomain, subDomainId, jobId } = job.data
       await sendJobAlertService(await getConnectionBySubdomain(subDomain), {
         _id: jobId,
+        subDomainId,
       })
       await done(null, 'Job alert sent')
     } catch (error) {
