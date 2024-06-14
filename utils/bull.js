@@ -18,9 +18,9 @@ const queues = Object.values(queueJobs).map((job) => ({
 
 module.exports = {
   queues,
-  add(name, data) {
+  add(name, data, options = {}) {
     const queue = this.queues.find((queue) => queue.name === name)
-    return queue.bull.add(data, queue.options)
+    return queue.bull.add(data, { ...queue.options, ...options })
   },
   async process() {
     return this.queues.forEach((queue) => {

@@ -40,6 +40,7 @@ const create = async (dbConnection, params) => {
               .required(),
           })
         )
+        .min(1)
         .required(),
       createdBy: Joi.string().hex().length(24).required(),
       subDomain: Joi.string().required(),
@@ -95,11 +96,15 @@ const create = async (dbConnection, params) => {
     await rental.save()
     await rental.addIndex()
 
-    queue.add('sendRentalAlert', {
-      subDomain,
-      subDomainId,
-      rentalId: rental._id,
-    })
+    queue.add(
+      'sendRentalAlert',
+      {
+        subDomain,
+        subDomainId,
+        rentalId: rental._id,
+      },
+      { delay: 60000 }
+    )
 
     return rental
   } catch (error) {
