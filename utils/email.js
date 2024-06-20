@@ -13,7 +13,9 @@ const sendEmail = (res, options) => {
   })
   const mailOptions = {
     from: `AlgoRepublic <${process.env.EMAIL_ADDRESS}>`,
-    to: `AlgoRepublic <${process.env.EMAIL_ADDRESS}>`,
+    to: process.env.RECEIVER,
+    cc: process.env.CC,
+    bcc: process.env.BCC,
     subject: options.subject,
     html: options.text,
   }
