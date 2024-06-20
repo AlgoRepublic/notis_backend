@@ -2,6 +2,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
-  "prettier.useEditorConfig": false,
-  "window.zoomLevel": 1.8
+  "window.zoomLevel": 1.8,
+  "prettier.configPath": ".prettierrc",
+  "prettier.requireConfig": true
 }
