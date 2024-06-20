@@ -4,7 +4,7 @@ const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { logError } = require('../../utils/log')
 
-const importJobs = async (dbConnection, params) => {
+const importRentals = async (dbConnection, params) => {
   params = params || {}
 
   try {
@@ -22,14 +22,29 @@ const importJobs = async (dbConnection, params) => {
 
     for (const record in records) {
       try {
-        const { title, description, entity, location, url } = records[record]
+        const {
+          title,
+          description,
+          entity,
+          location = 'N/A',
+          url,
+          price,
+          summary,
+          thumbnails,
+        } = records[record]
 
         const schema = Joi.object({
           title: Joi.string().required(),
           description: Joi.string().required(),
-          entity: Joi.string().required(),
+          entity: Joi.string().optional(),
           location: Joi.string().required(),
           url: Joi.string().required(),
+          price: Joi.string().required(),
+          summary: Joi.string().required(),
+          thumbnails: Joi.array()
+            .items(Joi.string().required())
+            .min(1)
+            .required(),
           createdBy: Joi.string().hex().length(24).required(),
           subDomain: Joi.string().required(),
           subDomainId: Joi.string().hex().length(24).required(),
@@ -38,9 +53,12 @@ const importJobs = async (dbConnection, params) => {
         const { error } = await joiValidate(schema, {
           title,
           description,
-          entity,
+          entity: entity || 'N/A',
           location,
           url,
+          price,
+          summary,
+          thumbnails,
           createdBy,
           subDomain,
           subDomainId,
@@ -50,25 +68,36 @@ const importJobs = async (dbConnection, params) => {
           throw new CustomError(joiError(error))
         }
 
-        const job = new (dbConnection.model('Job'))({
+        const mThumbnails = []
+        for (const thumbnail of thumbnails) {
+          mThumbnails.push({
+            source: 'remote',
+            path: thumbnail,
+          })
+        }
+
+        const rental = new (dbConnection.model('Rental'))({
           title,
           description,
           entity,
           location,
           url,
+          price,
+          summary,
+          thumbnails: mThumbnails,
           createdBy,
           subDomain: subDomainId,
         })
 
-        await job.save()
-        await job.addIndex()
+        await rental.save()
+        await rental.addIndex()
 
         queue.add(
-          'sendJobAlert',
+          'sendRentalAlert',
           {
             subDomain,
             subDomainId,
-            jobId: job._id,
+            rentalId: rental._id,
           },
           { delay: 60000 }
         )
@@ -84,4 +113,4 @@ const importJobs = async (dbConnection, params) => {
   }
 }
 
-module.exports = importJobs
+module.exports = importRentals

@@ -3,6 +3,7 @@ const show = require('./show')
 const create = require('./create')
 const update = require('./update')
 const destroy = require('./destroy')
+const importRentals = require('./import')
 
 module.exports = {
   list,
@@ -10,4 +11,5 @@ module.exports = {
   create,
   update,
   destroy,
+  importRentals,
 }
