@@ -3,6 +3,7 @@ const { successResponse, errorResponse } = require('./response')
 const { logError } = require('./log')
 
 const sendEmail = (res, options) => {
+  console.log('options', options)
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_SERVICE,
     port: process.env.EMAIL_PORT,
@@ -13,17 +14,20 @@ const sendEmail = (res, options) => {
   })
   const mailOptions = {
     from: `AlgoRepublic <${process.env.EMAIL_ADDRESS}>`,
-    to: `AlgoRepublic <${process.env.EMAIL_ADDRESS}>`,
+    to: process.env.EMAIL_DEFAULT_TO,
+    cc: process.env.EMAIL_DEFAULT_CC,
+    bcc: process.env.EMAIL_DEFAULT_BCC,
     subject: options.subject,
     html: options.text,
   }
 
   transporter.sendMail(mailOptions, function (err) {
     if (err) {
+      console.log('err', err)
       logError(err)
       return errorResponse(res, 'Unable to Send Email')
     } else {
-      return successResponse(res, 'Email Send Successfully')
+      return successResponse(res, 'Thank you for contacting us')
     }
   })
 }
