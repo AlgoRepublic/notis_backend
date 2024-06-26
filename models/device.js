@@ -15,6 +15,11 @@ const deviceSchema = new Schema(
       default: false,
       index: true,
     },
+    showAdsAfter: {
+      type: Date,
+      default: null,
+      index: true,
+    },
     searches: [
       {
         type: Schema.Types.ObjectId,

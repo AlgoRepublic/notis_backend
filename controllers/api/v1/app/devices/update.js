@@ -5,12 +5,13 @@ const { aysncMiddleware } = require('../../../../../middlewares/async')
 const update = aysncMiddleware(async (req, res, next) => {
   const connection = req.sdbConnection
 
-  const { oldFcmToken, fcmToken, sendNotification } = req.body
+  const { oldFcmToken, fcmToken, sendNotification, adSeen } = req.body
 
   let device = await updateDeviceService(connection, {
     oldFcmToken,
     fcmToken,
     sendNotification,
+    adSeen,
   })
 
   device = await connection
@@ -19,6 +20,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     .select({
       fcmToken: 1,
       sendNotification: 1,
+      showAdsAfter: 1,
     })
     .lean()
     .exec()

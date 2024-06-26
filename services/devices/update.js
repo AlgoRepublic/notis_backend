@@ -6,18 +6,20 @@ const create = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { oldFcmToken, fcmToken, sendNotification } = params
+    const { oldFcmToken, fcmToken, sendNotification, adSeen } = params
 
     const schema = Joi.object({
       oldFcmToken: Joi.string().optional(),
       fcmToken: Joi.string().required(),
       sendNotification: Joi.boolean().optional(),
+      adSeen: Joi.bool().optional(),
     })
 
     const { error } = await joiValidate(schema, {
       oldFcmToken,
       fcmToken,
       sendNotification,
+      adSeen,
     })
 
     if (error) {
@@ -35,6 +37,17 @@ const create = async (dbConnection, params) => {
 
     if (!device) {
       device = new (dbConnection.model('Device'))()
+    }
+
+    if (adSeen) {
+      const currentDate = new Date()
+      const newDate =
+        device.showAdsAfter && device.showAdsAfter > currentDate
+          ? new Date(device.showAdsAfter)
+          : new Date(currentDate)
+
+      newDate.setHours(newDate.getHours() + 24)
+      device.showAdsAfter = newDate
     }
 
     device.fcmToken = fcmToken
