@@ -5,7 +5,8 @@ const { pagyParams, pagyRes } = require('../../../../../utils/pagination')
 const list = aysncMiddleware(async (req, res, next) => {
   const connection = req.dbConnection
   const { page, perPage } = pagyParams(req.query.page, req.query.perPage)
-  const { domainName, host, fqdn, type, answer, ttl, sort, sortAs } = req.query
+  const { title, domainName, host, fqdn, type, answer, ttl, sort, sortAs } =
+    req.query
   const query = {}
   const sortQuery = {}
 
@@ -33,36 +34,81 @@ const list = aysncMiddleware(async (req, res, next) => {
     query.ttl = ttl
   }
 
+  if (title) {
+    query['app.title'] = { $regex: title, $options: 'i' }
+  }
+
   if (
     sort &&
     sortAs &&
     ['asc', 'desc'].includes(sortAs) &&
-    ['domainName', 'host', 'fqdn', 'type', 'answer', 'ttl'].includes(sort)
+    ['title', 'domainName', 'host', 'fqdn', 'type', 'answer', 'ttl'].includes(
+      sort
+    )
   ) {
-    sortQuery[sort] = sortAs === 'asc' ? 1 : -1
+    sortQuery[sort === 'title' ? 'app.title' : sort] = sortAs === 'asc' ? 1 : -1
   } else {
     sortQuery._id = -1
   }
 
-  const subDomains = await connection
-    .model('SubDomain')
-    .find(query)
-    .populate({ path: 'app', select: { title: 1, description: 1 } })
-    .select({
-      recordId: 1,
-      domainName: 1,
-      host: 1,
-      fqdn: 1,
-      type: 1,
-      answer: 1,
-      ttl: 1,
-    })
-    .sort(sortQuery)
-    .skip((page - 1) * perPage)
-    .limit(perPage)
-    .lean()
+  const subDomainCommonAgg = [
+    {
+      $lookup: {
+        from: 'apps',
+        localField: 'app',
+        foreignField: '_id',
+        as: 'app',
+      },
+    },
+    {
+      $unwind: {
+        path: '$app',
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $match: query,
+    },
+  ]
 
-  const count = await connection.model('SubDomain').countDocuments(query)
+  const subDomains = await connection.model('SubDomain').aggregate([
+    ...subDomainCommonAgg,
+    {
+      $sort: sortQuery,
+    },
+    {
+      $skip: (page - 1) * perPage,
+    },
+    {
+      $limit: perPage,
+    },
+    {
+      $project: {
+        recordId: 1,
+        domainName: 1,
+        host: 1,
+        fqdn: 1,
+        type: 1,
+        answer: 1,
+        ttl: 1,
+        app: {
+          _id: 1,
+          title: 1,
+          description: 1,
+        },
+      },
+    },
+  ])
+
+  const count = (
+    await connection
+      .model('SubDomain')
+      .aggregate([
+        ...subDomainCommonAgg,
+        { $group: { _id: null, count: { $sum: 1 } } },
+      ])
+  )[0]?.count
+
   const pagySubDomains = pagyRes(subDomains, count, page, perPage)
 
   return successResponse(res, 'SubDomain List', { subDomains: pagySubDomains })
