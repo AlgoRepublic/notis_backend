@@ -19,6 +19,7 @@ const update = async (dbConnection, params) => {
       termsOfUse,
       copyRightClaim,
       logo,
+      adsEnabled,
     } = params
 
     const schema = Joi.object({
@@ -37,6 +38,7 @@ const update = async (dbConnection, params) => {
       termsOfUse: Joi.string().optional(),
       copyRightClaim: Joi.string().optional(),
       logo: Joi.object().optional(),
+      adsEnabled: Joi.boolean().optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -51,6 +53,7 @@ const update = async (dbConnection, params) => {
       termsOfUse,
       copyRightClaim,
       logo,
+      adsEnabled,
     })
 
     if (error) {
@@ -123,6 +126,10 @@ const update = async (dbConnection, params) => {
 
     if (logo !== undefined) {
       app.logo = await saveFile(logo, 'admin/apps/logo')
+    }
+
+    if (adsEnabled !== undefined) {
+      app.adsEnabled = adsEnabled
     }
 
     await app.save()

@@ -68,6 +68,10 @@ const appSchema = new Schema(
       required: true,
       trim: true,
     },
+    adsEnabled: {
+      type: Boolean,
+      required: true,
+    },
   },
   {
     timestamps: true,

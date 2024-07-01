@@ -18,6 +18,7 @@ const create = async (dbConnection, params) => {
       termsOfUse,
       copyRightClaim,
       logo,
+      adsEnabled,
     } = params
 
     const schema = Joi.object({
@@ -35,6 +36,7 @@ const create = async (dbConnection, params) => {
       termsOfUse: Joi.string().required(),
       copyRightClaim: Joi.string().required(),
       logo: Joi.object().required(),
+      adsEnabled: Joi.boolean().required(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -48,6 +50,7 @@ const create = async (dbConnection, params) => {
       termsOfUse,
       copyRightClaim,
       logo,
+      adsEnabled,
     })
 
     if (error) {
@@ -77,6 +80,7 @@ const create = async (dbConnection, params) => {
       termsOfUse,
       copyRightClaim,
       logo: logoPath,
+      adsEnabled,
     })
 
     await app.save()

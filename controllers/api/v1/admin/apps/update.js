@@ -16,6 +16,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     privacyPolicy,
     termsOfUse,
     copyRightClaim,
+    adsEnabled,
   } = req.body
 
   const { logo } = req.files || {}
@@ -32,6 +33,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     termsOfUse,
     copyRightClaim,
     logo,
+    adsEnabled,
   })
 
   app = await connection
@@ -50,6 +52,7 @@ const update = aysncMiddleware(async (req, res, next) => {
       termsOfUse: 1,
       copyRightClaim: 1,
       logo: 1,
+      adsEnabled: 1,
     })
     .lean()
     .exec()
