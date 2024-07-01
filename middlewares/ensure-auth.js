@@ -24,18 +24,34 @@ const ensureAuth = (allowedRoles) => {
           allowedRoles = [allowedRoles]
         }
 
-        const query = { _id: decoded._id }
-
-        if (req.subDomain === 'www' || !req.subDomain) {
-          query.roles = 'admin'
-        } else {
-          if (!req.subDomainId) {
-            throw new CustomError('Subdomain is not resolved')
-          }
-
-          query.roles = 'creator'
-          query.subDomains = req.subDomainId
+        const query = {
+          $or: [
+            {
+              _id: decoded._id,
+              roles: 'admin',
+            },
+            ...(req.subDomainId
+              ? [
+                  {
+                    _id: decoded._id,
+                    roles: 'creator',
+                    subDomains: req.subDomainId,
+                  },
+                ]
+              : []),
+          ],
         }
+
+        // if (req.subDomain === 'www' || !req.subDomain) {
+        //   query.roles = 'admin'
+        // } else {
+        //   if (!req.subDomainId) {
+        //     throw new CustomError('Subdomain is not resolved')
+        //   }
+
+        //   query.roles = 'creator'
+        //   query.subDomains = req.subDomainId
+        // }
 
         const user = await connection.model('User').findOne(query).lean().exec()
 

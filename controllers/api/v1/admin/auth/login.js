@@ -23,13 +23,28 @@ const login = aysncMiddleware(async (req, res, next) => {
     throw new CustomError(joiError(error))
   }
 
-  const query = {}
-  if (req.subDomain === 'www' || !req.subDomain) {
-    query.roles = 'admin'
-  } else {
-    query.roles = 'creator'
-    query.subDomains = req.subDomainId
+  const query = {
+    $or: [
+      {
+        roles: 'admin',
+      },
+      ...(req.subDomainId
+        ? [
+            {
+              roles: 'creator',
+              subDomains: req.subDomainId,
+            },
+          ]
+        : []),
+    ],
   }
+
+  // if (req.subDomain === 'www' || !req.subDomain) {
+  //   query.roles = 'admin'
+  // } else {
+  //   query.roles = 'creator'
+  //   query.subDomains = req.subDomainId
+  // }
 
   let user = await connection
     .model('User')
