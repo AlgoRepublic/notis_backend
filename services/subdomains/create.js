@@ -10,7 +10,7 @@ const create = async (dbConnection, params) => {
     const { host } = params
 
     const schema = Joi.object({
-      host: Joi.string().required(),
+      host: Joi.string().not('www', 'admin').required(),
     })
 
     const { error } = await joiValidate(schema, { host })

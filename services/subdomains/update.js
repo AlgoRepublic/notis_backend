@@ -11,7 +11,7 @@ const update = async (dbConnection, params) => {
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).required(),
-      host: Joi.string().required(),
+      host: Joi.string().not('www', 'admin').required(),
     })
 
     const { error } = await joiValidate(schema, { _id, host })
