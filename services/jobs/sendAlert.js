@@ -108,7 +108,7 @@ const sendAlert = async (dbConnection, params) => {
             const message = {
               data: {
                 jobId: job._id,
-                alertId: alert._id,
+                alertId: alert._id.toString(),
                 url: job._source.url,
               },
               notification: {

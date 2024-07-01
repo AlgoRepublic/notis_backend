@@ -114,7 +114,7 @@ const sendAlert = async (dbConnection, params) => {
             const message = {
               data: {
                 rentalId: rental._id,
-                alertId: alert._id,
+                alertId: alert._id.toString(),
                 url: rental._source.url,
               },
               notification: {
