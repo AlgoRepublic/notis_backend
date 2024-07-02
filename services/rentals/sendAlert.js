@@ -118,7 +118,7 @@ const sendAlert = async (dbConnection, params) => {
                 url: rental._source.url,
               },
               notification: {
-                title: 'Rental Alert',
+                title: 'A new rental opportunity for you!',
                 body: rental._source.title,
               },
               token: device.fcmToken,
