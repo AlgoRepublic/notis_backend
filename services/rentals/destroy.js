@@ -25,6 +25,7 @@ const destroy = async (dbConnection, params) => {
     }
 
     await rental.removeIndex()
+    await dbConnection.model('Alert').deleteMany({ rental: rental._id })
     await rental.deleteOne()
 
     return true

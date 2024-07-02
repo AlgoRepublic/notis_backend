@@ -25,6 +25,7 @@ const destroy = async (dbConnection, params) => {
     }
 
     await job.removeIndex()
+    await dbConnection.model('Alert').deleteMany({ job: job._id })
     await job.deleteOne()
 
     return true
