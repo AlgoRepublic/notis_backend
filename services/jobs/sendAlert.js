@@ -112,7 +112,7 @@ const sendAlert = async (dbConnection, params) => {
                 url: job._source.url,
               },
               notification: {
-                title: 'Job Alert',
+                title: 'A new job for you!',
                 body: job._source.title,
               },
               token: device.fcmToken,
