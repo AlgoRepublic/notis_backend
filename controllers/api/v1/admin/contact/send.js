@@ -20,7 +20,7 @@ const send = aysncMiddleware(async (req, res, next) => {
     `
 
   const emailOptions = {
-    subject: 'Notis App Contact ',
+    subject: req.t('12'),
     text: Textmessage,
   }
 

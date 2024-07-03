@@ -111,7 +111,7 @@ const list = aysncMiddleware(async (req, res, next) => {
 
   const pagySubDomains = pagyRes(subDomains, count, page, perPage)
 
-  return successResponse(res, 'SubDomain List', { subDomains: pagySubDomains })
+  return successResponse(res, req.t('29'), { subDomains: pagySubDomains })
 })
 
 module.exports = list

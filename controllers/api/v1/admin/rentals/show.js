@@ -37,7 +37,7 @@ const show = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Rental info', {
+  return successResponse(res, req.t('24'), {
     rental,
   })
 })

@@ -12,7 +12,7 @@ const list = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Country List', { countries })
+  return successResponse(res, req.t('13'), { countries })
 })
 
 module.exports = list

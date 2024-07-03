@@ -38,7 +38,7 @@ const list = aysncMiddleware(async (req, res, next) => {
   const count = await connection.model('AdMob').countDocuments(query)
   const pagyAdMobs = pagyRes(adMob, count, page, perPage)
 
-  return successResponse(res, 'AdMob List', { AdMobs: pagyAdMobs })
+  return successResponse(res, req.t('5'), { AdMobs: pagyAdMobs })
 })
 
 module.exports = list

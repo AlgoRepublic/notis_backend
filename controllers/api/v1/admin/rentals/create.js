@@ -49,7 +49,7 @@ const create = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Rental created successfully', { rental })
+  return successResponse(res, req.t('20'), { rental })
 })
 
 module.exports = create

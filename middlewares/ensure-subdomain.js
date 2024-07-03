@@ -7,7 +7,7 @@ const ensureSubdomain = async (req, res, next) => {
     const connection = req.sdbConnection
 
     if (!connection) {
-      throw new CustomError('Invalid domain')
+      throw new CustomError(req.t('48'))
     }
 
     next()

@@ -22,7 +22,7 @@ const show = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'SubDomain info', {
+  return successResponse(res, req.t('28'), {
     subDomain,
   })
 })

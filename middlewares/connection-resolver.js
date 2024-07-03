@@ -23,7 +23,7 @@ const resolveSubdomain = async (req, res, next) => {
 
     const connection = await getConnectionBySubdomain(subdomain)
     if (!connection) {
-      throw new CustomError(`Subdomain ${subdomain} not found`)
+      throw new CustomError(req.t('36'))
     }
 
     req.sdbConnection = connection
@@ -46,7 +46,7 @@ const resolveSubdomain = async (req, res, next) => {
     next()
   } catch (error) {
     logError(error)
-    return errorResponse(res, 'Invalid subdomain')
+    return errorResponse(res, req.t('37'))
   }
 }
 

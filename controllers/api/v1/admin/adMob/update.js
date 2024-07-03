@@ -23,7 +23,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'AdMob updated successfully', {
+  return successResponse(res, req.t('7'), {
     adMob: {
       _id: adMob._id,
       adType: adMob.adType,

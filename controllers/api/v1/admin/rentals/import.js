@@ -14,7 +14,7 @@ const importRentals = aysncMiddleware(async (req, res, next) => {
     subDomainId: req.subDomainId.toString(),
   })
 
-  return successResponse(res, 'Rentals imported successfully')
+  return successResponse(res, req.t('22'))
 })
 
 module.exports = importRentals

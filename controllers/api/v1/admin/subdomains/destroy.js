@@ -8,7 +8,7 @@ const destroy = aysncMiddleware(async (req, res, next) => {
   const { _id } = req.params
   await destroySubDomainService(connection, { _id })
 
-  return successResponse(res, 'Subdomain deleted successfully')
+  return successResponse(res, req.t('27'))
 })
 
 module.exports = destroy

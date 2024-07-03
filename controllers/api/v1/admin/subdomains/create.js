@@ -8,7 +8,7 @@ const create = aysncMiddleware(async (req, res, next) => {
   const { host } = req.body
   const subDomain = await createSubDomainService(connection, { host })
 
-  return successResponse(res, 'Subdomain create successfully', {
+  return successResponse(res, req.t('26'), {
     subDomain: {
       _id: subDomain._id,
       recordId: subDomain.recordId,

@@ -25,7 +25,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Subdomain updated successfully', {
+  return successResponse(res, req.t('30'), {
     subDomain,
   })
 })

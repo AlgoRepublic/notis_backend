@@ -14,7 +14,7 @@ const importJobs = aysncMiddleware(async (req, res, next) => {
     subDomainId: req.subDomainId.toString(),
   })
 
-  return successResponse(res, 'Jobs imported successfully')
+  return successResponse(res, req.t('16'))
 })
 
 module.exports = importJobs

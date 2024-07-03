@@ -33,7 +33,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'User updated successfully', {
+  return successResponse(res, req.t('35'), {
     user: {
       _id: user._id,
       name: user.name,

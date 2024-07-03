@@ -55,7 +55,7 @@ const create = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'App created successfully', {
+  return successResponse(res, req.t('8'), {
     app,
   })
 })

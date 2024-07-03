@@ -31,7 +31,7 @@ const create = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'User create successfully', {
+  return successResponse(res, req.t('31'), {
     user,
   })
 })

@@ -21,7 +21,7 @@ const create = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'AdMob create successfully', {
+  return successResponse(res, req.t('3'), {
     adMob,
   })
 })

@@ -10,7 +10,7 @@ module.exports = (err, req, res, next) => {
     message = err?.message
     statusCode = err?.statusCode
   } else {
-    message = 'Internal server error'
+    message = req.t('49')
     statusCode = 500
   }
 

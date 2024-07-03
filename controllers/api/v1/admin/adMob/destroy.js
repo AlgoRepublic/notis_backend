@@ -8,7 +8,7 @@ const destroy = aysncMiddleware(async (req, res, next) => {
   const { _id } = req.params
   await destroyJobService(connection, { _id })
 
-  return successResponse(res, 'AdMob deleted successfully')
+  return successResponse(res, req.t('4'))
 })
 
 module.exports = destroy

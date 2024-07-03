@@ -51,7 +51,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Rental updated successfully', {
+  return successResponse(res, req.t('25'), {
     rental,
   })
 })

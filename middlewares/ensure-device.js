@@ -20,7 +20,7 @@ const ensureDevice = async (req, res, next) => {
       })
 
       if (error) {
-        throw new CustomError('FCMToken cannot be empty')
+        throw new CustomError(req.t('45'))
       }
 
       const device = await connection
@@ -29,7 +29,7 @@ const ensureDevice = async (req, res, next) => {
         .lean()
         .exec()
 
-      if (!device) throw new CustomError('Invalid FCMToken')
+      if (!device) throw new CustomError(req.t('46'))
 
       req.device = device
 
@@ -39,7 +39,7 @@ const ensureDevice = async (req, res, next) => {
       return errorResponse(res, err?.message)
     }
   } else {
-    return errorResponse(res, 'FCMToken is missing')
+    return errorResponse(res, req.t('47'))
   }
 }
 

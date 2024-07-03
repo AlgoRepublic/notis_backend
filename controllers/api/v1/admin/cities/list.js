@@ -19,7 +19,7 @@ const list = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'City List', { cities })
+  return successResponse(res, req.t('11'), { cities })
 })
 
 module.exports = list

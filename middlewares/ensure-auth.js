@@ -15,10 +15,10 @@ const ensureAuth = (allowedRoles) => {
         try {
           decoded = await jwt.verify(token, process.env.APP_JWT_KEY)
         } catch (err) {
-          return errorResponse(res, 'Invalid authorization token')
+          return errorResponse(res, req.t('38'))
         }
 
-        if (!decoded?._id) throw new CustomError('Invalid authorization token')
+        if (!decoded?._id) throw new CustomError(req.t('38'))
 
         if (!Array.isArray(allowedRoles)) {
           allowedRoles = [allowedRoles]
@@ -55,7 +55,7 @@ const ensureAuth = (allowedRoles) => {
 
         const user = await connection.model('User').findOne(query).lean().exec()
 
-        if (!user) throw new CustomError('Invalid authorization token')
+        if (!user) throw new CustomError(req.t('38'))
 
         const userRoles = user.roles || []
         const matchedRoles = userRoles.filter((value) =>
@@ -63,7 +63,7 @@ const ensureAuth = (allowedRoles) => {
         )
 
         if (matchedRoles.length === 0) {
-          throw new CustomError('User does not have permission to access this')
+          throw new CustomError(req.t('39'))
         }
 
         req.currentUser = user
@@ -74,7 +74,7 @@ const ensureAuth = (allowedRoles) => {
         return errorResponse(res, err?.message)
       }
     } else {
-      return errorResponse(res, 'Authorization token is missing')
+      return errorResponse(res, req.t('40'))
     }
   }
 }
@@ -86,11 +86,11 @@ const ensureSubdomainAccess = async (req, res, next) => {
     const subDomain = req.subDomain
 
     if (!currentUser) {
-      throw new CustomError('User is not authenticated')
+      throw new CustomError(req.t('41'))
     }
 
     if (!subDomain) {
-      throw new CustomError('Subdomain is not resolved')
+      throw new CustomError(req.t('42'))
     }
 
     const domain = await connection
@@ -99,7 +99,7 @@ const ensureSubdomainAccess = async (req, res, next) => {
       .lean()
       .exec()
     if (!domain) {
-      throw new CustomError('Subdomain not found')
+      throw new CustomError(req.t('36'))
     }
 
     const user = await connection
@@ -114,13 +114,13 @@ const ensureSubdomainAccess = async (req, res, next) => {
       .exec()
 
     if (!user) {
-      throw new CustomError('User does not have access to this subdomain')
+      throw new CustomError(req.t('34'))
     }
 
     next()
   } catch (error) {
     logError(error)
-    return errorResponse(res, error?.message || 'Invalid subdomain access')
+    return errorResponse(res, error?.message || req.t('44'))
   }
 }
 

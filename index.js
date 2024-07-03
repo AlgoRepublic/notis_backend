@@ -9,6 +9,7 @@ const cors = require('cors')
 const fileUpload = require('express-fileupload')
 const apiRoutes = require('./routes/api')
 const queue = require('./utils/bull')
+const i18n = require('./utils/i18n')
 const { connectAllDb } = require('./utils/connection-manager')
 const { firebaseInitialize } = require('./utils/firebase')
 const { logInfo } = require('./utils/log')
@@ -28,6 +29,7 @@ app.use(
     preserveExtension: true,
   })
 )
+app.use(i18n.init)
 
 app.use(
   '/api/v1',

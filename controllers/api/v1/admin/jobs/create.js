@@ -30,7 +30,7 @@ const create = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Job created successfully', { job })
+  return successResponse(res, req.t('14'), { job })
 })
 
 module.exports = create

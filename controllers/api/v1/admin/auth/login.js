@@ -50,12 +50,12 @@ const login = aysncMiddleware(async (req, res, next) => {
     .model('User')
     .findOne({ email: email.toLowerCase(), ...query })
   if (!user) {
-    throw new CustomError('Invalid credentials')
+    throw new CustomError(req.t('2'))
   }
 
   const valid = await bcrypt.compare(password, user.password)
   if (!valid) {
-    throw new CustomError('Invalid credentials')
+    throw new CustomError(req.t('2'))
   }
 
   const token = user.generateAuthToken()
@@ -67,7 +67,7 @@ const login = aysncMiddleware(async (req, res, next) => {
     token: token,
   }
 
-  return successResponse(res, 'Signed In successfully', { user: data })
+  return successResponse(res, req.t('1'), { user: data })
 })
 
 module.exports = login

@@ -33,7 +33,7 @@ const show = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'AdMob info', {
+  return successResponse(res, req.t('6'), {
     adMob,
   })
 })

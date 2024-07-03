@@ -23,7 +23,7 @@ const update = aysncMiddleware(async (req, res, next) => {
 
   await connection.model('User').deleteOne({ _id })
 
-  return successResponse(res, 'User deleted successfully')
+  return successResponse(res, req.t('32'))
 })
 
 module.exports = update
