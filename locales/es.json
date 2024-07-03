@@ -4,8 +4,8 @@
   "3": "AdMob erfolgreich erstellt",
   "4": "AdMob wurde erfolgreich gelöscht",
   "5": "AdMob-Liste",
-  "6": "AdMo-Informationen",
-  "7": "AdMobb wurde erfolgreich aktualisiert",
+  "6": "AdMob-Informationen",
+  "7": "AdMob wurde erfolgreich aktualisiert",
   "8": "App erfolgreich erstellt",
   "9": "App-Information",
   "10": "App erfolgreich aktualisiert",
@@ -47,5 +47,13 @@
   "46": "Ungültiger FCMToken",
   "47": "FCMToken fehlt",
   "48": "Ungültige Domäne",
-  "49": "Interner Serverfehler"
+  "49": "Interner Serverfehler",
+  "50": "Warnungen erfolgreich gelöscht",
+  "51": "Warnung erfolgreich aktualisiert",
+  "52": "Geräteinformationen",
+  "53": "Gerät erfolgreich aktualisiert",
+  "54": "Suche erfolgreich gelöscht",
+  "55": "Suche erfolgreich erstellt",
+  "56": "Suche erfolgreich gelöscht",
+  "57": "Suchliste"
 }

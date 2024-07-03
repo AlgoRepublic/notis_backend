@@ -25,7 +25,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Device updated successfully', {
+  return successResponse(res, req.t('53'), {
     device,
   })
 })

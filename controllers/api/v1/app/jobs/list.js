@@ -66,7 +66,7 @@ const list = aysncMiddleware(async (req, res, next) => {
     jobs = pagyRes([], 0, page, perPage)
   }
 
-  return successResponse(res, 'Job List', { jobs })
+  return successResponse(res, req.t('17'), { jobs })
 })
 
 module.exports = list

@@ -21,7 +21,7 @@ const info = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'App info', {
+  return successResponse(res, req.t('9'), {
     app,
   })
 })

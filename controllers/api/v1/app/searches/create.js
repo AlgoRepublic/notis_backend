@@ -23,7 +23,7 @@ const create = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Search created successfully', {
+  return successResponse(res, req.t('55'), {
     search,
   })
 })

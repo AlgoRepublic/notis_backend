@@ -4,8 +4,8 @@
   "3": "AdMob created successfully",
   "4": "AdMob deleted successfully",
   "5": "AdMob list",
-  "6": "AdMo info",
-  "7": "AdMobb updated successfully",
+  "6": "AdMob info",
+  "7": "AdMob updated successfully",
   "8": "App created successfully",
   "9": "App info",
   "10": "App updated successfully",
@@ -47,5 +47,13 @@
   "46": "Invalid FCMToken",
   "47": "FCMToken is missing",
   "48": "Invalid domain",
-  "49": "Internal server error"
+  "49": "Internal server error",
+  "50": "Alerts cleared successfully",
+  "51": "Alert updated successfully",
+  "52": "Device info",
+  "53": "Device updated successfully",
+  "54": "Search cleared successfully",
+  "55": "Search created successfully",
+  "56": "Search deleted successfully",
+  "57": "Search list"
 }

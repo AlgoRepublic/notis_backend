@@ -9,7 +9,7 @@ const clear = aysncMiddleware(async (req, res, next) => {
     .model('Device')
     .updateOne({ _id: req.device._id }, { $set: { searches: [] } })
 
-  return successResponse(res, 'Search cleared successfully')
+  return successResponse(res, req.t('54'))
 })
 
 module.exports = clear

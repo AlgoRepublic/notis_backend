@@ -6,7 +6,7 @@ const clear = aysncMiddleware(async (req, res, next) => {
 
   await connection.model('Alert').deleteMany({ device: req.device._id })
 
-  return successResponse(res, 'Alerts cleared successfully')
+  return successResponse(res, req.t('50'))
 })
 
 module.exports = clear

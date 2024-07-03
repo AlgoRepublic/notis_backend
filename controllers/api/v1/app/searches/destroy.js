@@ -11,7 +11,7 @@ const destroy = aysncMiddleware(async (req, res, next) => {
     .model('Device')
     .updateMany({ searches: _id }, { $pull: { searches: _id } })
 
-  return successResponse(res, 'Search deleted successfully')
+  return successResponse(res, req.t('56'))
 })
 
 module.exports = destroy

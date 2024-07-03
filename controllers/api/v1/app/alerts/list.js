@@ -48,7 +48,7 @@ const list = aysncMiddleware(async (req, res, next) => {
   const count = await connection.model('Alert').countDocuments(query)
   const pagyAlerts = pagyRes(alerts, count, page, perPage)
 
-  return successResponse(res, 'Job List', { alerts: pagyAlerts })
+  return successResponse(res, req.t('17'), { alerts: pagyAlerts })
 })
 
 module.exports = list

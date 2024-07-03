@@ -23,7 +23,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     .lean()
     .exec()
 
-  return successResponse(res, 'Alert updated successfully', {
+  return successResponse(res, req.t('51'), {
     alert,
   })
 })
