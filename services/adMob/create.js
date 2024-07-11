@@ -11,7 +11,9 @@ const create = async (dbConnection, params) => {
     const { adType, code } = params
 
     const schema = Joi.object({
-      adType: Joi.string().required(),
+      adType: Joi.string()
+        .valid('Interstitial', 'Native', 'Rewarded', 'OpenAd')
+        .required(),
       code: Joi.string().required(),
     })
 

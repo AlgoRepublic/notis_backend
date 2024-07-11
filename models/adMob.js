@@ -5,7 +5,7 @@ const adMobSchema = new Schema(
   {
     adType: {
       type: String,
-      enum: ['Interstitial', 'Native', 'Rewarded'],
+      enum: ['Interstitial', 'Native', 'Rewarded', 'OpenAd'],
       required: true,
       index: true,
     },

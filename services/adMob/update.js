@@ -12,8 +12,10 @@ const create = async (dbConnection, params) => {
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).required(),
-      adType: Joi.string().required().optional(),
-      code: Joi.string().required().optional(),
+      adType: Joi.string()
+        .valid('Interstitial', 'Native', 'Rewarded', 'OpenAd')
+        .optional(),
+      code: Joi.string().optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -29,6 +31,7 @@ const create = async (dbConnection, params) => {
     const adMob = await AdMob.findOne({
       _id: _id,
     }).exec()
+
     if (adType !== undefined) {
       adMob.adType = adType
     }
