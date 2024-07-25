@@ -33,6 +33,9 @@ const show = aysncMiddleware(async (req, res, next) => {
       type: 1,
       answer: 1,
       ttl: 1,
+      subDomainURL: 1,
+      scrapingURLCount: 1,
+      status: 1,
     })
     .lean()
     .exec()

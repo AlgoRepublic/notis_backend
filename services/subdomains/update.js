@@ -7,14 +7,15 @@ const update = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { _id, host } = params
+    const { _id, host, status } = params
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).required(),
       host: Joi.string().not('www', 'admin').required(),
+      status: Joi.boolean().optional(),
     })
 
-    const { error } = await joiValidate(schema, { _id, host })
+    const { error } = await joiValidate(schema, { _id, host, status })
 
     if (error) {
       throw new CustomError(joiError(error))
@@ -52,6 +53,10 @@ const update = async (dbConnection, params) => {
       subDomain.answer = response.answer
       subDomain.ttl = response.ttl
       subDomain.type = response.type
+      subDomain.subDomainURL = `https://${response.host}.${response.domainName}`
+      if (status !== undefined) {
+        subDomain.status = status
+      }
       await subDomain.save()
 
       return subDomain

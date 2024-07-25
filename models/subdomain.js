@@ -54,6 +54,23 @@ const subDomainSchema = new Schema(
       required: true,
       index: true,
     },
+    subDomainURL: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+      index: true,
+    },
+    scrapingURLCount: {
+      type: Number,
+      default: 0,
+      index: true,
+    },
+    status: {
+      type: Boolean,
+      default: true,
+      index: true,
+    },
     app: {
       type: Schema.Types.ObjectId,
       ref: 'App',

@@ -17,7 +17,16 @@ const show = aysncMiddleware(async (req, res, next) => {
       },
     })
     .select({
+      recordId: 1,
+      domainName: 1,
       host: 1,
+      fqdn: 1,
+      type: 1,
+      answer: 1,
+      ttl: 1,
+      subDomainURL: 1,
+      scrapingURLCount: 1,
+      status: 1,
     })
     .lean()
     .exec()

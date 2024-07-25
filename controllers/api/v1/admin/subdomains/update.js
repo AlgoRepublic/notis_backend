@@ -6,8 +6,12 @@ const update = aysncMiddleware(async (req, res, next) => {
   const connection = req.dbConnection
 
   const { _id } = req.params
-  const { host } = req.body
-  let subDomain = await updateSubDomainService(connection, { _id, host })
+  const { host, status } = req.body
+  let subDomain = await updateSubDomainService(connection, {
+    _id,
+    host,
+    status,
+  })
 
   subDomain = await connection
     .model('SubDomain')
@@ -21,6 +25,9 @@ const update = aysncMiddleware(async (req, res, next) => {
       type: 1,
       answer: 1,
       ttl: 1,
+      subDomainURL: 1,
+      scrapingURLCount: 1,
+      status: 1,
     })
     .lean()
     .exec()

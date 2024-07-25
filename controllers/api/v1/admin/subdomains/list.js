@@ -5,8 +5,19 @@ const { pagyParams, pagyRes } = require('../../../../../utils/pagination')
 const list = aysncMiddleware(async (req, res, next) => {
   const connection = req.dbConnection
   const { page, perPage } = pagyParams(req.query.page, req.query.perPage)
-  const { title, domainName, host, fqdn, type, answer, ttl, sort, sortAs } =
-    req.query
+  const {
+    title,
+    domainName,
+    host,
+    fqdn,
+    type,
+    answer,
+    ttl,
+    status,
+    scrapingURLCount,
+    sort,
+    sortAs,
+  } = req.query
   const query = {}
   const sortQuery = {}
 
@@ -38,13 +49,29 @@ const list = aysncMiddleware(async (req, res, next) => {
     query['app.title'] = { $regex: title, $options: 'i' }
   }
 
+  if (status !== undefined) {
+    query.status = status
+  }
+
+  if (scrapingURLCount) {
+    query.scrapingURLCount = scrapingURLCount
+  }
+
   if (
     sort &&
     sortAs &&
     ['asc', 'desc'].includes(sortAs) &&
-    ['title', 'domainName', 'host', 'fqdn', 'type', 'answer', 'ttl'].includes(
-      sort
-    )
+    [
+      'title',
+      'domainName',
+      'host',
+      'fqdn',
+      'type',
+      'answer',
+      'ttl',
+      'status',
+      'scrapingURLCount',
+    ].includes(sort)
   ) {
     sortQuery[sort === 'title' ? 'app.title' : sort] = sortAs === 'asc' ? 1 : -1
   } else {
@@ -91,6 +118,9 @@ const list = aysncMiddleware(async (req, res, next) => {
         type: 1,
         answer: 1,
         ttl: 1,
+        subDomainURL: 1,
+        scrapingURLCount: 1,
+        status: 1,
         app: {
           _id: 1,
           title: 1,

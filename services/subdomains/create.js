@@ -7,13 +7,14 @@ const create = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { host } = params
+    const { host, status } = params
 
     const schema = Joi.object({
       host: Joi.string().not('www', 'admin').required(),
+      status: Joi.boolean().optional(),
     })
 
-    const { error } = await joiValidate(schema, { host })
+    const { error } = await joiValidate(schema, { host, status })
 
     if (error) {
       throw new CustomError(joiError(error))
@@ -39,6 +40,8 @@ const create = async (dbConnection, params) => {
         answer: response.answer,
         ttl: response.ttl,
         type: response.type,
+        subDomainURL: `https://${response.host}.${response.domainName}`,
+        status: status === undefined ? true : status,
       })
 
       subDomain.dbURI = `${process.env.BASE_DB_URI}/mt_${subDomain._id}`
