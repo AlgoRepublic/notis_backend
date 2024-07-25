@@ -15,6 +15,8 @@ const list = aysncMiddleware(async (req, res, next) => {
     ttl,
     status,
     scrapingURLCount,
+    appType,
+    country,
     sort,
     sortAs,
   } = req.query
@@ -57,6 +59,14 @@ const list = aysncMiddleware(async (req, res, next) => {
     query.scrapingURLCount = scrapingURLCount
   }
 
+  if (appType) {
+    query['app.appType'] = appType
+  }
+
+  if (country) {
+    query['app.country.name'] = country
+  }
+
   if (
     sort &&
     sortAs &&
@@ -71,9 +81,20 @@ const list = aysncMiddleware(async (req, res, next) => {
       'ttl',
       'status',
       'scrapingURLCount',
+      'appType',
+      'country',
     ].includes(sort)
   ) {
-    sortQuery[sort === 'title' ? 'app.title' : sort] = sortAs === 'asc' ? 1 : -1
+    let sortKey = sort
+    if (sort === 'title') {
+      sortKey = 'app.title'
+    } else if (sort === 'country') {
+      sortKey = 'app.country.name'
+    } else if (sort === 'appType') {
+      sortKey = 'app.appType'
+    }
+
+    sortQuery[sortKey] = sortAs === 'asc' ? 1 : -1
   } else {
     sortQuery._id = -1
   }
@@ -85,6 +106,22 @@ const list = aysncMiddleware(async (req, res, next) => {
         localField: 'app',
         foreignField: '_id',
         as: 'app',
+        pipeline: [
+          {
+            $lookup: {
+              from: 'countries',
+              localField: 'country',
+              foreignField: '_id',
+              as: 'country',
+            },
+          },
+          {
+            $unwind: {
+              path: '$country',
+              preserveNullAndEmptyArrays: true,
+            },
+          },
+        ],
       },
     },
     {
@@ -125,6 +162,11 @@ const list = aysncMiddleware(async (req, res, next) => {
           _id: 1,
           title: 1,
           description: 1,
+          appType: 1,
+          country: {
+            _id: 1,
+            name: 1,
+          },
         },
       },
     },
