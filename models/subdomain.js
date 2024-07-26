@@ -61,7 +61,7 @@ const subDomainSchema = new Schema(
       lowercase: true,
       index: true,
     },
-    scrapingURLCount: {
+    searchEngineURLs: {
       type: Number,
       default: 0,
       index: true,

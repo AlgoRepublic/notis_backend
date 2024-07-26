@@ -14,7 +14,7 @@ const list = aysncMiddleware(async (req, res, next) => {
     answer,
     ttl,
     status,
-    scrapingURLCount,
+    searchEngineURLs,
     appType,
     country,
     sort,
@@ -55,8 +55,8 @@ const list = aysncMiddleware(async (req, res, next) => {
     query.status = status
   }
 
-  if (scrapingURLCount) {
-    query.scrapingURLCount = scrapingURLCount
+  if (searchEngineURLs) {
+    query.searchEngineURLs = searchEngineURLs
   }
 
   if (appType) {
@@ -80,7 +80,7 @@ const list = aysncMiddleware(async (req, res, next) => {
       'answer',
       'ttl',
       'status',
-      'scrapingURLCount',
+      'searchEngineURLs',
       'appType',
       'country',
     ].includes(sort)
@@ -156,7 +156,7 @@ const list = aysncMiddleware(async (req, res, next) => {
         answer: 1,
         ttl: 1,
         subDomainURL: 1,
-        scrapingURLCount: 1,
+        searchEngineURLs: 1,
         status: 1,
         app: {
           _id: 1,

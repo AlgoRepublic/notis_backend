@@ -26,7 +26,7 @@ const update = aysncMiddleware(async (req, res, next) => {
       answer: 1,
       ttl: 1,
       subDomainURL: 1,
-      scrapingURLCount: 1,
+      searchEngineURLs: 1,
       status: 1,
     })
     .lean()

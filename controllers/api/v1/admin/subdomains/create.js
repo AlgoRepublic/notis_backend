@@ -19,7 +19,7 @@ const create = aysncMiddleware(async (req, res, next) => {
       answer: subDomain.answer,
       ttl: subDomain.ttl,
       subDomainURL: subDomain.subDomainURL,
-      scrapingURLCount: subDomain.scrapingURLCount,
+      searchEngineURLs: subDomain.searchEngineURLs,
       status: subDomain.status,
     },
   })
