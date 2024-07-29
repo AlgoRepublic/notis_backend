@@ -55,5 +55,21 @@
   "54": "Search cleared successfully",
   "55": "Search created successfully",
   "56": "Search deleted successfully",
-  "57": "Search list"
+  "57": "Search list",
+  "58": "AdMob not found",
+  "59": "Alert not found",
+  "60": "Sub domain already used",
+  "61": "App not found",
+  "62": "Job not found",
+  "63": "A new job for you!",
+  "64": "Failed to create DNS record",
+  "65": "Failed to delete DNS record",
+  "66": "Failed to update DNS record",
+  "67": "Rental not found",
+  "68": "File is required",
+  "69": "Invalid file type",
+  "70": "A new rental opportunity for you!",
+  "71": "Title or Location is required",
+  "72": "SubDomain already exists",
+  "73": "User already exists"
 }

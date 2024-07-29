@@ -21,6 +21,7 @@ const create = aysncMiddleware(async (req, res, next) => {
   let allThumbnails = mergeObjects(thumbnails, thumbnailFiles)
 
   let rental = await createRentalService(connection, {
+    locale: req.getLocale(),
     title,
     description,
     entity,

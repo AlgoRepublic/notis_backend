@@ -1,12 +1,14 @@
 const Joi = require('joi')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
+const { translate } = require('../../utils/i18n')
 
 const update = async (dbConnection, params) => {
   params = params || {}
 
   try {
     const {
+      locale,
       _id,
       title,
       description,
@@ -79,7 +81,7 @@ const update = async (dbConnection, params) => {
     const rental = await dbConnection.model('Rental').findOne({ _id }).exec()
 
     if (!rental) {
-      throw new CustomError('Rental not found')
+      throw new CustomError(translate('67', locale))
     }
 
     if (title !== undefined) {

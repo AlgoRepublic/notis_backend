@@ -8,6 +8,7 @@ const create = aysncMiddleware(async (req, res, next) => {
   const { title, location } = req.body
 
   let search = await createSearchService(connection, {
+    locale: req.getLocale(),
     title,
     location,
     device: req.device?._id?.toString(),

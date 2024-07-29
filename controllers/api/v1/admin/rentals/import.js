@@ -8,6 +8,7 @@ const importRentals = aysncMiddleware(async (req, res, next) => {
   const { file } = req.files || {}
 
   await importRentalsService(connection, {
+    locale: req.getLocale(),
     file,
     createdBy: req.currentUser._id.toString(),
     subDomain: req.subDomain,

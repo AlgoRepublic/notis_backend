@@ -8,6 +8,7 @@ const update = aysncMiddleware(async (req, res, next) => {
   const { _id } = req.params
   const { title, description, entity, location, url } = req.body
   let job = await updateJobService(connection, {
+    locale: req.getLocale(),
     _id,
     title,
     description,

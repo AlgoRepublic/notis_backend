@@ -22,6 +22,7 @@ const update = aysncMiddleware(async (req, res, next) => {
   let allThumbnails = mergeObjects(thumbnails, thumbnailFiles)
 
   let rental = await updateRentalService(connection, {
+    locale: req.getLocale(),
     _id,
     title,
     description,

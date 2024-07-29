@@ -3,12 +3,13 @@ const Joi = require('joi')
 const { CustomError } = require('../../../utils/error')
 const { joiValidate, joiError } = require('../../../utils/joi')
 const { logError } = require('../../../utils/log')
+const { translate } = require('../../../utils/i18n')
 
 const create = async (params) => {
   params = params || {}
 
   try {
-    const { host } = params
+    const { locale, host } = params
 
     const schema = Joi.object({
       host: Joi.string().required(),
@@ -45,13 +46,13 @@ const create = async (params) => {
 
       if (response.status !== 200) {
         logError(response)
-        throw new CustomError('Failed to create DNS record')
+        throw new CustomError(translate('64', locale))
       }
 
       return response.data
     } catch (error) {
       logError(error?.message)
-      throw new CustomError('Failed to create DNS record')
+      throw new CustomError(translate('64', locale))
     }
   } catch (error) {
     throw new CustomError(error?.message)

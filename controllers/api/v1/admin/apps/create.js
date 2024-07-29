@@ -21,6 +21,7 @@ const create = aysncMiddleware(async (req, res, next) => {
   const { logo } = req.files || {}
 
   let app = await createAppService(connection, {
+    locale: req.getLocale(),
     title,
     description,
     appType,

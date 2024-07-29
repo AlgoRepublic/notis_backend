@@ -2,12 +2,14 @@ const Joi = require('joi')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { saveFile } = require('../../utils/storage')
+const { translate } = require('../../utils/i18n')
 
 const create = async (dbConnection, params) => {
   params = params || {}
 
   try {
     const {
+      locale,
       title,
       description,
       appType,
@@ -64,7 +66,7 @@ const create = async (dbConnection, params) => {
       .exec()
 
     if (subDomainAlreadyUsed) {
-      throw new CustomError('Sub domain already used')
+      throw new CustomError(translate('60', locale))
     }
 
     const logoPath = await saveFile(logo, 'admin/apps/logo')

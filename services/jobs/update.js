@@ -1,12 +1,14 @@
 const Joi = require('joi')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
+const { translate } = require('../../utils/i18n')
 
 const update = async (dbConnection, params) => {
   params = params || {}
 
   try {
     const {
+      locale,
       _id,
       title,
       description,
@@ -46,7 +48,7 @@ const update = async (dbConnection, params) => {
     const job = await dbConnection.model('Job').findOne({ _id }).exec()
 
     if (!job) {
-      throw new CustomError('Job not found')
+      throw new CustomError(translate('62', locale))
     }
 
     if (title !== undefined) {

@@ -6,7 +6,11 @@ const create = aysncMiddleware(async (req, res, next) => {
   const connection = req.dbConnection
 
   const { host, status } = req.body
-  const subDomain = await createSubDomainService(connection, { host, status })
+  const subDomain = await createSubDomainService(connection, {
+    locale: req.getLocale(),
+    host,
+    status,
+  })
 
   return successResponse(res, req.t('26'), {
     subDomain: {

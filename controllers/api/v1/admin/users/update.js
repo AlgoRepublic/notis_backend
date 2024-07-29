@@ -8,6 +8,7 @@ const update = aysncMiddleware(async (req, res, next) => {
   const { _id } = req.params
   const { name, email, password, roles, subDomains } = req.body
   let user = await updateUserService(connection, {
+    locale: req.getLocale(),
     _id,
     name,
     email,

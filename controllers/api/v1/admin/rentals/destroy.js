@@ -6,7 +6,7 @@ const destroy = aysncMiddleware(async (req, res, next) => {
   const connection = req.sdbConnection
 
   const { _id } = req.params
-  await destroyRentalService(connection, { _id })
+  await destroyRentalService(connection, { locale: req.getLocale(), _id })
 
   return successResponse(res, req.t('21'))
 })

@@ -8,6 +8,7 @@ const update = aysncMiddleware(async (req, res, next) => {
   const { _id } = req.params
   const { host, status } = req.body
   let subDomain = await updateSubDomainService(connection, {
+    locale: req.getLocale(),
     _id,
     host,
     status,

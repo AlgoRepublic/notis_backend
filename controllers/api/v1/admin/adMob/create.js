@@ -7,6 +7,7 @@ const create = aysncMiddleware(async (req, res, next) => {
 
   const { adType, code } = req.body
   let adMob = await createAdMobService(connection, {
+    locale: req.getLocale(),
     adType,
     code,
   })

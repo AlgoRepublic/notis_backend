@@ -3,12 +3,13 @@ const destroySubDomainService = require('../name.com/dns/destroy')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { logError } = require('../../utils/log')
+const { translate } = require('../../utils/i18n')
 
 const destroy = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { _id } = params
+    const { locale, _id } = params
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).required(),
@@ -26,7 +27,7 @@ const destroy = async (dbConnection, params) => {
       .exec()
 
     if (!subDomain) {
-      throw new CustomError('SubDomain not found')
+      throw new CustomError(translate('36', locale))
     }
 
     try {

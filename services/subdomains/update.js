@@ -2,12 +2,13 @@ const Joi = require('joi')
 const updateSubDomainService = require('../name.com/dns/update')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
+const { translate } = require('../../utils/i18n')
 
 const update = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { _id, host, status } = params
+    const { locale, _id, host, status } = params
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).required(),
@@ -27,7 +28,7 @@ const update = async (dbConnection, params) => {
       .exec()
 
     if (!subDomain) {
-      throw new CustomError('SubDomain not found')
+      throw new CustomError(translate('36', locale))
     }
 
     const subDomainExists = await dbConnection
@@ -36,11 +37,12 @@ const update = async (dbConnection, params) => {
       .exec()
 
     if (subDomainExists) {
-      throw new CustomError('SubDomain already exists')
+      throw new CustomError(translate('72', locale))
     }
 
     try {
       const response = await updateSubDomainService({
+        locale,
         recordId: subDomain.recordId,
         host,
       })

@@ -9,6 +9,7 @@ const update = aysncMiddleware(async (req, res, next) => {
   const { viewed } = req.body
 
   let alert = await updateAlertService(connection, {
+    locale: req.getLocale(),
     _id,
     viewed,
   })

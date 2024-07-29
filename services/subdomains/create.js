@@ -2,12 +2,13 @@ const Joi = require('joi')
 const createSubDomainService = require('../../services/name.com/dns/create')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
+const { translate } = require('../../utils/i18n')
 
 const create = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { host, status } = params
+    const { locale, host, status } = params
 
     const schema = Joi.object({
       host: Joi.string().not('www', 'admin').required(),
@@ -27,11 +28,11 @@ const create = async (dbConnection, params) => {
       .exec()
 
     if (subDomainExists) {
-      throw new CustomError('SubDomain already exists')
+      throw new CustomError(translate('72', locale))
     }
 
     try {
-      const response = await createSubDomainService({ host })
+      const response = await createSubDomainService({ locale, host })
       const subDomain = new (dbConnection.model('SubDomain'))({
         recordId: response.id,
         domainName: response.domainName,

@@ -1,12 +1,13 @@
 const Joi = require('joi')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
+const { translate } = require('../../utils/i18n')
 
 const update = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { _id, viewed } = params
+    const { locale, _id, viewed } = params
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).required(),
@@ -25,7 +26,7 @@ const update = async (dbConnection, params) => {
     const alert = await dbConnection.model('Alert').findOne({ _id }).exec()
 
     if (!alert) {
-      throw new CustomError('Alert not found')
+      throw new CustomError(translate('59', locale))
     }
 
     alert.viewed = viewed

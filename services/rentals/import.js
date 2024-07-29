@@ -3,19 +3,20 @@ const queue = require('../../utils/bull')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { logError } = require('../../utils/log')
+const { translate } = require('../../utils/i18n')
 
 const importRentals = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { file, createdBy, subDomain, subDomainId } = params
+    const { locale, file, createdBy, subDomain, subDomainId } = params
 
     if (file === undefined) {
-      throw new CustomError('file is required')
+      throw new CustomError(translate('68', locale))
     }
 
     if (file?.mimetype !== 'application/json') {
-      throw new CustomError('Invalid file type')
+      throw new CustomError(translate('69', locale))
     }
 
     const records = JSON.parse(Buffer.from(file.data).toString())

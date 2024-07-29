@@ -2,12 +2,14 @@ const Joi = require('joi')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { saveFile } = require('../../utils/storage')
+const { translate } = require('../../utils/i18n')
 
 const update = async (dbConnection, params) => {
   params = params || {}
 
   try {
     const {
+      locale,
       _id,
       title,
       description,
@@ -63,7 +65,7 @@ const update = async (dbConnection, params) => {
     const app = await dbConnection.model('App').findOne({ _id }).exec()
 
     if (!app) {
-      throw new CustomError('App not found')
+      throw new CustomError(translate('61', locale))
     }
 
     if (title !== undefined) {
@@ -86,7 +88,7 @@ const update = async (dbConnection, params) => {
         .exec()
 
       if (subDomainAlreadyUsed) {
-        throw new CustomError('Sub domain already used')
+        throw new CustomError(translate('60', locale))
       }
 
       app.subDomain = subDomain

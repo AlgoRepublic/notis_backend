@@ -1,5 +1,6 @@
 const path = require('path')
 const i18n = require('i18n')
+const { logError } = require('./log')
 
 i18n.configure({
   locales: ['en', 'es'],
@@ -10,4 +11,13 @@ i18n.configure({
   },
 })
 
-module.exports = i18n
+const translate = (phrase, locale = 'en') => {
+  try {
+    return i18n.__({ phrase, locale })
+  } catch (error) {
+    logError(error)
+    return phrase
+  }
+}
+
+module.exports = { i18n, translate }

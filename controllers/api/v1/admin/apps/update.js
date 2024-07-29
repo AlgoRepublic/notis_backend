@@ -22,6 +22,7 @@ const update = aysncMiddleware(async (req, res, next) => {
   const { logo } = req.files || {}
 
   let app = await updateAppService(connection, {
+    locale: req.getLocale(),
     _id,
     title,
     description,

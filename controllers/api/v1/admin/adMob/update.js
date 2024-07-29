@@ -8,6 +8,7 @@ const update = aysncMiddleware(async (req, res, next) => {
   const { _id } = req.params
   const { adType, code } = req.body
   let adMob = await updateAdMobService(connection, {
+    locale: req.getLocale(),
     _id,
     adType,
     code,

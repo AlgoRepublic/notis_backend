@@ -1,12 +1,13 @@
 const Joi = require('joi')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
+const { translate } = require('../../utils/i18n')
 
 const create = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { title, location, device } = params
+    const { locale, title, location, device } = params
 
     const schema = Joi.object({
       title: Joi.string().allow('').optional(),
@@ -25,7 +26,7 @@ const create = async (dbConnection, params) => {
     }
 
     if (!title && !location) {
-      throw new CustomError('Title or Location is required')
+      throw new CustomError(translate('71', locale))
     }
 
     const search = await dbConnection.model('Search').findOneAndUpdate(

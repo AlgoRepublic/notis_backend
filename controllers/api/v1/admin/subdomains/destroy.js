@@ -6,7 +6,7 @@ const destroy = aysncMiddleware(async (req, res, next) => {
   const connection = req.dbConnection
 
   const { _id } = req.params
-  await destroySubDomainService(connection, { _id })
+  await destroySubDomainService(connection, { locale: req.getLocale(), _id })
 
   return successResponse(res, req.t('27'))
 })

@@ -3,12 +3,13 @@ const Joi = require('joi')
 const { CustomError } = require('../../../utils/error')
 const { joiValidate, joiError } = require('../../../utils/joi')
 const { logError } = require('../../../utils/log')
+const { translate } = require('../../../utils/i18n')
 
 const destroy = async (params) => {
   params = params || {}
 
   try {
-    const { recordId } = params
+    const { locale, recordId } = params
 
     const schema = Joi.object({
       recordId: Joi.number().required(),
@@ -34,13 +35,13 @@ const destroy = async (params) => {
       )
 
       if (response.status !== 200) {
-        throw new CustomError('Failed to delete DNS record')
+        throw new CustomError(translate('65', locale))
       }
 
       return true
     } catch (error) {
       logError(error?.message)
-      throw new CustomError('Failed to delete DNS record')
+      throw new CustomError(translate('65', locale))
     }
   } catch (error) {
     throw new CustomError(error?.message)

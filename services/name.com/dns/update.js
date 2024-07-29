@@ -3,12 +3,13 @@ const Joi = require('joi')
 const { CustomError } = require('../../../utils/error')
 const { joiValidate, joiError } = require('../../../utils/joi')
 const { logError } = require('../../../utils/log')
+const { translate } = require('../../../utils/i18n')
 
 const update = async (params) => {
   params = params || {}
 
   try {
-    const { host, recordId } = params
+    const { locale, host, recordId } = params
 
     const schema = Joi.object({
       recordId: Joi.number().required(),
@@ -46,13 +47,13 @@ const update = async (params) => {
       )
 
       if (response.status !== 200) {
-        throw new CustomError('Failed to update DNS record')
+        throw new CustomError(translate('66', locale))
       }
 
       return response.data
     } catch (error) {
       logError(error?.message)
-      throw new CustomError('Failed to update DNS record')
+      throw new CustomError(translate('66', locale))
     }
   } catch (error) {
     throw new CustomError(error?.message)

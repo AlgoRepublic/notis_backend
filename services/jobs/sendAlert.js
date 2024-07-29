@@ -3,6 +3,7 @@ const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { logError } = require('../../utils/log')
 const { firebaseSendNotification } = require('../../utils/firebase')
+const { translate } = require('../../utils/i18n')
 
 const sendAlert = async (dbConnection, params) => {
   params = params || {}
@@ -12,7 +13,7 @@ const sendAlert = async (dbConnection, params) => {
       throw new CustomError('No db connection')
     }
 
-    const { _id, subDomainId } = params
+    const { locale, _id, subDomainId } = params
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).required(),
@@ -112,7 +113,7 @@ const sendAlert = async (dbConnection, params) => {
                 url: job._source.url,
               },
               notification: {
-                title: 'A new job for you!',
+                title: translate('63', locale),
                 body: job._source.title,
               },
               token: device.fcmToken,

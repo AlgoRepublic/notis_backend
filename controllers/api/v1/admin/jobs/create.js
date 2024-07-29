@@ -7,6 +7,7 @@ const create = aysncMiddleware(async (req, res, next) => {
 
   const { title, description, entity, location, url } = req.body
   let job = await createJobService(connection, {
+    locale: req.getLocale(),
     title,
     description,
     entity,

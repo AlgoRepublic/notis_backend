@@ -8,6 +8,7 @@ const update = aysncMiddleware(async (req, res, next) => {
   const { oldFcmToken, fcmToken, sendNotification, adSeen } = req.body
 
   let device = await updateDeviceService(connection, {
+    locale: req.getLocale(),
     oldFcmToken,
     fcmToken,
     sendNotification,

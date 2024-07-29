@@ -1,12 +1,13 @@
 const Joi = require('joi')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
+const { translate } = require('../../utils/i18n')
 
 const destroy = async (dbConnection, params) => {
   params = params || {}
 
   try {
-    const { _id } = params
+    const { locale, _id } = params
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).required(),
@@ -21,7 +22,7 @@ const destroy = async (dbConnection, params) => {
     const job = await dbConnection.model('Job').findOne({ _id }).exec()
 
     if (!job) {
-      throw new CustomError('Job not found')
+      throw new CustomError(translate('62', locale))
     }
 
     await job.removeIndex()

@@ -2,6 +2,7 @@ const Joi = require('joi')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { encryptPassword } = require('../../utils/password')
+const { translate } = require('../../utils/i18n')
 
 const create = async (dbConnection, params) => {
   params = params || {}
@@ -9,7 +10,7 @@ const create = async (dbConnection, params) => {
   try {
     const User = await dbConnection.model('User')
 
-    const { _id, name, email, password, roles, subDomains } = params
+    const { locale, _id, name, email, password, roles, subDomains } = params
 
     const schema = Joi.object({
       _id: Joi.string().hex().length(24).required(),
@@ -44,7 +45,7 @@ const create = async (dbConnection, params) => {
         .exec()
 
       if (userExists) {
-        throw new CustomError('User already exists')
+        throw new CustomError(translate('73', locale))
       }
     }
 

@@ -7,6 +7,7 @@ const create = aysncMiddleware(async (req, res, next) => {
 
   const { name, email, password, roles, subDomains } = req.body
   let user = await createUserService(connection, {
+    locale: req.getLocale(),
     name,
     email,
     password,
