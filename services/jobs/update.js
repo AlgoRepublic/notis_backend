@@ -26,7 +26,7 @@ const update = async (dbConnection, params) => {
       entity: Joi.string().optional(),
       location: Joi.string().optional(),
       url: Joi.string().optional(),
-      updatedBy: Joi.string().hex().length(24).required(),
+      updatedBy: Joi.string().hex().length(24).optional(),
       subDomainId: Joi.string().hex().length(24).required(),
     })
 

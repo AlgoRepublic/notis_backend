@@ -14,9 +14,13 @@ const create = async (dbConnection, params) => {
       entity,
       location,
       url,
+      jobType,
+      workplaceType,
+      salary,
       createdBy,
       subDomain,
       subDomainId,
+      scrapingURLId,
     } = params
 
     const schema = Joi.object({
@@ -25,9 +29,13 @@ const create = async (dbConnection, params) => {
       entity: Joi.string().required(),
       location: Joi.string().required(),
       url: Joi.string().required(),
-      createdBy: Joi.string().hex().length(24).required(),
+      jobType: Joi.string().optional(),
+      workplaceType: Joi.string().optional(),
+      salary: Joi.number().optional(),
+      createdBy: Joi.string().hex().length(24).optional(),
       subDomain: Joi.string().required(),
       subDomainId: Joi.string().hex().length(24).required(),
+      scrapingURLId: Joi.string().hex().length(24).optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -36,13 +44,29 @@ const create = async (dbConnection, params) => {
       entity,
       location,
       url,
+      jobType,
+      workplaceType,
+      salary,
       createdBy,
       subDomain,
       subDomainId,
+      scrapingURLId,
     })
 
     if (error) {
       throw new CustomError(joiError(error))
+    }
+
+    if (scrapingURLId) {
+      const alreadyExists = await dbConnection
+        .model('Job')
+        .findOne({ scrapingURLId })
+        .lean()
+        .exec()
+
+      if (alreadyExists) {
+        throw new CustomError('Job already exists')
+      }
     }
 
     const job = new (dbConnection.model('Job'))({
@@ -51,8 +75,12 @@ const create = async (dbConnection, params) => {
       entity,
       location,
       url,
+      jobType,
+      workplaceType,
+      salary,
       createdBy,
       subDomain: subDomainId,
+      scrapingURLId,
     })
 
     await job.save()

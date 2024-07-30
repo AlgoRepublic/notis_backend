@@ -56,6 +56,9 @@ const list = aysncMiddleware(async (req, res, next) => {
         entity: job._source.entity,
         location: job._source.location,
         url: job._source.url,
+        jobType: job._source.jobType,
+        workplaceType: job._source.workplaceType,
+        salary: job._source.salary,
         createdAt: job._source.createdAt,
       }
     })

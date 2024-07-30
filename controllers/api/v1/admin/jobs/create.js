@@ -5,7 +5,16 @@ const { aysncMiddleware } = require('../../../../../middlewares/async')
 const create = aysncMiddleware(async (req, res, next) => {
   const connection = req.sdbConnection
 
-  const { title, description, entity, location, url } = req.body
+  const {
+    title,
+    description,
+    entity,
+    location,
+    url,
+    jobType,
+    workplaceType,
+    salary,
+  } = req.body
   let job = await createJobService(connection, {
     locale: req.getLocale(),
     title,
@@ -13,6 +22,9 @@ const create = aysncMiddleware(async (req, res, next) => {
     entity,
     location,
     url,
+    jobType,
+    workplaceType,
+    salary,
     createdBy: req.currentUser._id.toString(),
     subDomain: req.subDomain,
     subDomainId: req.subDomainId.toString(),
@@ -27,6 +39,9 @@ const create = aysncMiddleware(async (req, res, next) => {
       entity: 1,
       location: 1,
       url: 1,
+      jobType: 1,
+      workplaceType: 1,
+      salary: 1,
     })
     .lean()
     .exec()

@@ -26,12 +26,13 @@ connectAllDb().then(async () => {
 
   try {
     await seedAllData()
+
+    logInfo(
+      `Seeding process finished successfully in ${process.env.NODE_ENV} environment`
+    )
+    process.exit(0)
   } catch (error) {
     logError(`Error in seeding process: ${error}`)
+    process.exit(1)
   }
-
-  logInfo(
-    `Seeding process finished successfully in ${process.env.NODE_ENV} environment`
-  )
-  logInfo('Press Ctrl + C to exit!')
 })

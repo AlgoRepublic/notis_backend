@@ -6,7 +6,16 @@ const update = aysncMiddleware(async (req, res, next) => {
   const connection = req.sdbConnection
 
   const { _id } = req.params
-  const { title, description, entity, location, url } = req.body
+  const {
+    title,
+    description,
+    entity,
+    location,
+    url,
+    jobType,
+    workplaceType,
+    salary,
+  } = req.body
   let job = await updateJobService(connection, {
     locale: req.getLocale(),
     _id,
@@ -15,6 +24,9 @@ const update = aysncMiddleware(async (req, res, next) => {
     entity,
     location,
     url,
+    jobType,
+    workplaceType,
+    salary,
     updatedBy: req.currentUser._id.toString(),
     subDomainId: req.subDomainId.toString(),
   })
@@ -28,6 +40,9 @@ const update = aysncMiddleware(async (req, res, next) => {
       entity: 1,
       location: 1,
       url: 1,
+      jobType: 1,
+      workplaceType: 1,
+      salary: 1,
     })
     .lean()
     .exec()

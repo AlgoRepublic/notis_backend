@@ -43,6 +43,33 @@ const jobSchema = new Schema(
       es_indexed: true,
       es_type: 'text',
     },
+    jobType: {
+      type: String,
+      trim: true,
+      index: true,
+      es_indexed: true,
+      es_type: 'keyword',
+    },
+    workplaceType: {
+      type: String,
+      trim: true,
+      index: true,
+      es_indexed: true,
+      es_type: 'keyword',
+    },
+    salary: {
+      type: Number,
+      trim: true,
+      index: true,
+      es_indexed: true,
+      es_type: 'float',
+    },
+    scrapingURLId: {
+      type: String,
+      index: true,
+      es_indexed: true,
+      es_type: 'keyword',
+    },
     subDomain: {
       type: String,
       required: true,
@@ -54,7 +81,6 @@ const jobSchema = new Schema(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
       index: true,
       default: null,
       es_indexed: true,
