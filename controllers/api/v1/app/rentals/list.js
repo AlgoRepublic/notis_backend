@@ -6,7 +6,36 @@ const { logError } = require('../../../../../utils/log')
 const list = aysncMiddleware(async (req, res, next) => {
   const connection = req.sdbConnection
   const { page, perPage } = pagyParams(req.query.page, req.query.perPage)
-  const { title, location } = req.query
+  const { title, location, propertyType } = req.query
+  let { priceFrom, priceTo, createdOnFrom, createdOnTo } = req.query
+
+  if (priceFrom) {
+    priceFrom = parseFloat(priceFrom)
+  }
+
+  if (priceTo) {
+    priceTo = parseFloat(priceTo)
+  }
+
+  if (
+    (priceFrom || priceFrom === 0) &&
+    (priceTo || priceTo === 0) &&
+    priceFrom > priceTo
+  ) {
+    ;[priceFrom, priceTo] = [priceTo, priceFrom]
+  }
+
+  if (createdOnFrom) {
+    createdOnFrom = new Date(createdOnFrom)
+  }
+
+  if (createdOnTo) {
+    createdOnTo = new Date(createdOnTo)
+  }
+
+  if (createdOnFrom && createdOnTo && createdOnFrom > createdOnTo) {
+    ;[createdOnFrom, createdOnTo] = [createdOnTo, createdOnFrom]
+  }
 
   let rentals
   try {
@@ -42,6 +71,31 @@ const list = aysncMiddleware(async (req, res, next) => {
                         location: {
                           query: location,
                           fuzziness: 'auto',
+                        },
+                      },
+                    },
+                  ]
+                : []),
+              ...(propertyType ? [{ term: { propertyType } }] : []),
+              ...(priceFrom || priceTo
+                ? [
+                    {
+                      range: {
+                        price: {
+                          gte: priceFrom,
+                          lte: priceTo,
+                        },
+                      },
+                    },
+                  ]
+                : []),
+              ...(createdOnFrom || createdOnTo
+                ? [
+                    {
+                      range: {
+                        createdOn: {
+                          ...(createdOnFrom ? { gte: createdOnFrom } : {}),
+                          ...(createdOnTo ? { lte: createdOnTo } : {}),
                         },
                       },
                     },

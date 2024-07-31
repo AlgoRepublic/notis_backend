@@ -6,7 +6,36 @@ const { logError } = require('../../../../../utils/log')
 const list = aysncMiddleware(async (req, res, next) => {
   const connection = req.sdbConnection
   const { page, perPage } = pagyParams(req.query.page, req.query.perPage)
-  const { title, location } = req.query
+  const { title, location, jobType, workplaceType } = req.query
+  let { salaryFrom, salaryTo, createdOnFrom, createdOnTo } = req.query
+
+  if (salaryFrom) {
+    salaryFrom = parseFloat(salaryFrom)
+  }
+
+  if (salaryTo) {
+    salaryTo = parseFloat(salaryTo)
+  }
+
+  if (
+    (salaryFrom || salaryFrom === 0) &&
+    (salaryTo || salaryTo === 0) &&
+    salaryFrom > salaryTo
+  ) {
+    ;[salaryFrom, salaryTo] = [salaryTo, salaryFrom]
+  }
+
+  if (createdOnFrom) {
+    createdOnFrom = new Date(createdOnFrom)
+  }
+
+  if (createdOnTo) {
+    createdOnTo = new Date(createdOnTo)
+  }
+
+  if (createdOnFrom && createdOnTo && createdOnFrom > createdOnTo) {
+    ;[createdOnFrom, createdOnTo] = [createdOnTo, createdOnFrom]
+  }
 
   let jobs
   try {
@@ -14,7 +43,7 @@ const list = aysncMiddleware(async (req, res, next) => {
       {
         size: perPage,
         from: (page - 1) * perPage,
-        sort: [{ createdAt: 'desc' }],
+        sort: [{ createdOn: 'desc' }],
         query: {
           bool: {
             must: [
@@ -41,6 +70,32 @@ const list = aysncMiddleware(async (req, res, next) => {
                     },
                   ]
                 : []),
+              ...(salaryFrom || salaryTo
+                ? [
+                    {
+                      range: {
+                        salary: {
+                          ...(salaryFrom ? { gte: salaryFrom } : {}),
+                          ...(salaryTo ? { lte: salaryTo } : {}),
+                        },
+                      },
+                    },
+                  ]
+                : []),
+              ...(jobType ? [{ term: { jobType } }] : []),
+              ...(workplaceType ? [{ term: { workplaceType } }] : []),
+              ...(createdOnFrom || createdOnTo
+                ? [
+                    {
+                      range: {
+                        createdOn: {
+                          ...(createdOnFrom ? { gte: createdOnFrom } : {}),
+                          ...(createdOnTo ? { lte: createdOnTo } : {}),
+                        },
+                      },
+                    },
+                  ]
+                : []),
             ],
           },
         },
@@ -61,6 +116,7 @@ const list = aysncMiddleware(async (req, res, next) => {
         salary: job._source.salary,
         createdAt: job._source.createdAt,
         createdOn: job._source.createdOn,
+        scrapingURLId: job._source.scrapingURLId,
       }
     })
 
