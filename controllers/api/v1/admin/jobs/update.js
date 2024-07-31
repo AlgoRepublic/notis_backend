@@ -15,6 +15,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     jobType,
     workplaceType,
     salary,
+    createdOn,
   } = req.body
   let job = await updateJobService(connection, {
     locale: req.getLocale(),
@@ -29,6 +30,7 @@ const update = aysncMiddleware(async (req, res, next) => {
     salary,
     updatedBy: req.currentUser._id.toString(),
     subDomainId: req.subDomainId.toString(),
+    createdOn,
   })
 
   job = await connection
@@ -43,6 +45,7 @@ const update = aysncMiddleware(async (req, res, next) => {
       jobType: 1,
       workplaceType: 1,
       salary: 1,
+      createdOn: 1,
     })
     .lean()
     .exec()

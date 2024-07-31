@@ -64,8 +64,10 @@ const list = aysncMiddleware(async (req, res, next) => {
         url: rental._source.url,
         summary: rental._source.summary,
         price: rental._source.price,
+        propertyType: rental._source.propertyType,
         thumbnails: rental._source.thumbnails,
         createdAt: rental._source.createdAt,
+        createdOn: rental._source.createdOn,
       }
     })
 

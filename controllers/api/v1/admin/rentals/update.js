@@ -15,7 +15,9 @@ const update = aysncMiddleware(async (req, res, next) => {
     url,
     price,
     summary,
+    propertyType,
     thumbnails = [],
+    createdOn,
   } = req.body
 
   const { thumbnails: thumbnailFiles = [] } = req.files || {}
@@ -31,9 +33,11 @@ const update = aysncMiddleware(async (req, res, next) => {
     url,
     price,
     summary,
+    propertyType,
     thumbnails: allThumbnails,
     updatedBy: req.currentUser._id.toString(),
     subDomainId: req.subDomainId.toString(),
+    createdOn,
   })
 
   rental = await connection
@@ -47,7 +51,9 @@ const update = aysncMiddleware(async (req, res, next) => {
       url: 1,
       summary: 1,
       price: 1,
+      propertyType: 1,
       thumbnails: 1,
+      createdOn: 1,
     })
     .lean()
     .exec()

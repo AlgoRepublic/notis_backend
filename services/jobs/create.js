@@ -21,6 +21,7 @@ const create = async (dbConnection, params) => {
       subDomain,
       subDomainId,
       scrapingURLId,
+      createdOn,
     } = params
 
     const schema = Joi.object({
@@ -29,13 +30,14 @@ const create = async (dbConnection, params) => {
       entity: Joi.string().required(),
       location: Joi.string().required(),
       url: Joi.string().required(),
-      jobType: Joi.string().optional(),
-      workplaceType: Joi.string().optional(),
+      jobType: Joi.string().allow('').optional(),
+      workplaceType: Joi.string().allow('').optional(),
       salary: Joi.number().optional(),
       createdBy: Joi.string().hex().length(24).optional(),
       subDomain: Joi.string().required(),
       subDomainId: Joi.string().hex().length(24).required(),
       scrapingURLId: Joi.string().hex().length(24).optional(),
+      createdOn: Joi.date().optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -51,6 +53,7 @@ const create = async (dbConnection, params) => {
       subDomain,
       subDomainId,
       scrapingURLId,
+      createdOn,
     })
 
     if (error) {
@@ -81,6 +84,7 @@ const create = async (dbConnection, params) => {
       createdBy,
       subDomain: subDomainId,
       scrapingURLId,
+      createdOn,
     })
 
     await job.save()

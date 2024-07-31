@@ -14,6 +14,8 @@ const create = aysncMiddleware(async (req, res, next) => {
     url,
     price,
     summary,
+    propertyType,
+    createdOn,
     thumbnails = [],
   } = req.body
 
@@ -29,10 +31,12 @@ const create = aysncMiddleware(async (req, res, next) => {
     url,
     price,
     summary,
+    propertyType,
     thumbnails: allThumbnails,
     createdBy: req.currentUser._id.toString(),
     subDomain: req.subDomain,
     subDomainId: req.subDomainId.toString(),
+    createdOn,
   })
 
   rental = await connection
@@ -45,7 +49,9 @@ const create = aysncMiddleware(async (req, res, next) => {
       url: 1,
       summary: 1,
       price: 1,
+      propertyType: 1,
       thumbnails: 1,
+      createdOn: 1,
     })
     .lean()
     .exec()

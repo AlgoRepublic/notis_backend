@@ -40,7 +40,7 @@ const importRentals = async (dbConnection, params) => {
           entity: Joi.string().optional(),
           location: Joi.string().required(),
           url: Joi.string().required(),
-          price: Joi.string().required(),
+          price: Joi.number().required(),
           summary: Joi.string().required(),
           thumbnails: Joi.array()
             .items(Joi.string().required())

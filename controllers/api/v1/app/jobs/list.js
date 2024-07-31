@@ -60,6 +60,7 @@ const list = aysncMiddleware(async (req, res, next) => {
         workplaceType: job._source.workplaceType,
         salary: job._source.salary,
         createdAt: job._source.createdAt,
+        createdOn: job._source.createdOn,
       }
     })
 

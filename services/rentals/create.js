@@ -17,10 +17,13 @@ const create = async (dbConnection, params) => {
       url,
       price,
       summary,
+      propertyType,
       thumbnails,
       createdBy,
       subDomain,
       subDomainId,
+      scrapingURLId,
+      createdOn,
     } = params
 
     const schema = Joi.object({
@@ -29,22 +32,28 @@ const create = async (dbConnection, params) => {
       entity: Joi.string().required(),
       location: Joi.string().required(),
       url: Joi.string().required(),
-      price: Joi.string().required(),
+      price: Joi.number().required(),
       summary: Joi.string().required(),
+      propertyType: Joi.string().allow('').optional(),
       thumbnails: Joi.array()
         .items(
-          Joi.object({
-            action: Joi.string().required().valid('add'),
-            file: Joi.alternatives()
-              .try(Joi.string(), Joi.object().unknown())
-              .required(),
-          })
+          Joi.alternatives().try(
+            Joi.object({
+              action: Joi.string().required().valid('add'),
+              file: Joi.alternatives()
+                .try(Joi.string(), Joi.object().unknown())
+                .required(),
+            }),
+            Joi.string().required()
+          )
         )
         .min(1)
         .required(),
-      createdBy: Joi.string().hex().length(24).required(),
+      createdBy: Joi.string().hex().length(24).optional(),
       subDomain: Joi.string().required(),
       subDomainId: Joi.string().hex().length(24).required(),
+      scrapingURLId: Joi.string().hex().length(24).optional(),
+      createdOn: Joi.date().optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -55,28 +64,46 @@ const create = async (dbConnection, params) => {
       url,
       price,
       summary,
+      propertyType,
       thumbnails,
       createdBy,
       subDomain,
       subDomainId,
+      scrapingURLId,
     })
 
     if (error) {
       throw new CustomError(joiError(error))
     }
 
+    if (scrapingURLId) {
+      const alreadyExists = await dbConnection
+        .model('Rental')
+        .findOne({ scrapingURLId })
+        .lean()
+        .exec()
+
+      if (alreadyExists) {
+        throw new CustomError('Rental already exists')
+      }
+    }
+
     const mThumbnails = []
     for (const thumbnail of thumbnails) {
       const obj = {}
 
-      if (typeof thumbnail.file === 'string') {
+      if (typeof thumbnail === 'string') {
         obj.source = 'remote'
-        obj.path = thumbnail.file
-      } else if (typeof thumbnail.file === 'object') {
-        obj.source = 'local'
-        obj.path = await saveFile(thumbnail.file, 'admin/rentals/thumbnails')
+        obj.path = thumbnail
+      } else {
+        if (typeof thumbnail.file === 'string') {
+          obj.source = 'remote'
+          obj.path = thumbnail.file
+        } else if (typeof thumbnail.file === 'object') {
+          obj.source = 'local'
+          obj.path = await saveFile(thumbnail.file, 'admin/rentals/thumbnails')
+        }
       }
-
       mThumbnails.push(obj)
     }
 
@@ -88,9 +115,12 @@ const create = async (dbConnection, params) => {
       url,
       price,
       summary,
+      propertyType,
       thumbnails: mThumbnails,
       createdBy,
       subDomain: subDomainId,
+      scrapingURLId,
+      createdOn,
     })
 
     await rental.save()

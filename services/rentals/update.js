@@ -17,9 +17,11 @@ const update = async (dbConnection, params) => {
       url,
       price,
       summary,
+      propertyType,
       thumbnails,
       updatedBy,
       subDomainId,
+      createdOn,
     } = params
 
     const schema = Joi.object({
@@ -29,35 +31,40 @@ const update = async (dbConnection, params) => {
       entity: Joi.string().optional(),
       location: Joi.string().optional(),
       url: Joi.string().optional(),
-      price: Joi.string().optional(),
+      price: Joi.number().optional(),
       summary: Joi.string().optional(),
+      propertyType: Joi.string().allow('').optional(),
       thumbnails: Joi.array()
         .items(
-          Joi.object({
-            action: Joi.string().required().valid('add', 'remove', 'update'),
-            _id: Joi.when('action', {
-              is: Joi.valid('update', 'remove'),
-              then: Joi.string().hex().length(24).required(),
-              otherwise: Joi.forbidden(),
-            }),
-            // _id: Joi.string().hex().length(24).optional(),
-            file: Joi.alternatives()
-              .try(Joi.string().required(), Joi.object().unknown())
-              .required(),
-            file: Joi.when('action', {
-              is: Joi.valid('update', 'remove'),
-              then: Joi.alternatives()
-                .try(Joi.string().required(), Joi.object().unknown())
-                .optional(),
-              otherwise: Joi.alternatives()
+          Joi.alternatives().try(
+            Joi.object({
+              action: Joi.string().required().valid('add', 'remove', 'update'),
+              _id: Joi.when('action', {
+                is: Joi.valid('update', 'remove'),
+                then: Joi.string().hex().length(24).required(),
+                otherwise: Joi.forbidden(),
+              }),
+              // _id: Joi.string().hex().length(24).optional(),
+              file: Joi.alternatives()
                 .try(Joi.string().required(), Joi.object().unknown())
                 .required(),
+              file: Joi.when('action', {
+                is: Joi.valid('update', 'remove'),
+                then: Joi.alternatives()
+                  .try(Joi.string().required(), Joi.object().unknown())
+                  .optional(),
+                otherwise: Joi.alternatives()
+                  .try(Joi.string().required(), Joi.object().unknown())
+                  .required(),
+              }),
             }),
-          })
+            Joi.string().required()
+          )
         )
         .optional(),
-      updatedBy: Joi.string().hex().length(24).required(),
+      updatedBy: Joi.string().hex().length(24).optional(),
       subDomainId: Joi.string().hex().length(24).required(),
+      createdOn: Joi.date().optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -69,9 +76,11 @@ const update = async (dbConnection, params) => {
       url,
       price,
       summary,
+      propertyType,
       thumbnails,
       updatedBy,
       subDomainId,
+      createdOn,
     })
 
     if (error) {
@@ -112,50 +121,69 @@ const update = async (dbConnection, params) => {
       rental.summary = summary
     }
 
+    if (propertyType !== undefined) {
+      rental.propertyType = propertyType
+    }
+
+    if (createdOn !== undefined) {
+      rental.createdOn = createdOn
+    }
+
     if (thumbnails !== undefined) {
+      if (thumbnails.length && typeof thumbnails[0] === 'string') {
+        rental.thumbnails = []
+      }
+
       for (const thumbnail of thumbnails) {
-        if (thumbnail.action === 'remove') {
-          const index = rental.thumbnails.findIndex(
-            (t) => t._id === thumbnail._id
-          )
+        if (typeof thumbnail === 'string') {
+          const obj = {}
+          obj.source = 'remote'
+          obj.path = thumbnail
+          rental.thumbnails.push({ ...obj })
+        } else {
+          if (thumbnail.action === 'remove') {
+            const index = rental.thumbnails.findIndex(
+              (t) => t._id === thumbnail._id
+            )
 
-          if (index > -1) {
-            const t = rental.thumbnails[index]
-            rental.thumbnails.splice(index, 1)
-          }
-        } else if (thumbnail.action === 'update') {
-          const index = rental.thumbnails.findIndex(
-            (t) => t._id === thumbnail._id
-          )
+            if (index > -1) {
+              const t = rental.thumbnails[index]
+              rental.thumbnails.splice(index, 1)
+            }
+          } else if (thumbnail.action === 'update') {
+            const index = rental.thumbnails.findIndex(
+              (t) => t._id === thumbnail._id
+            )
 
-          if (index > -1) {
-            const t = rental.thumbnails[index]
+            if (index > -1) {
+              const t = rental.thumbnails[index]
 
+              if (typeof thumbnail.file === 'string') {
+                t.source = 'remote'
+                t.path = thumbnail.file
+              } else if (typeof thumbnail.file === 'object') {
+                t.source = 'local'
+                t.path = await saveFile(
+                  thumbnail.file,
+                  'admin/rentals/thumbnails'
+                )
+              }
+            }
+          } else {
+            const obj = {}
             if (typeof thumbnail.file === 'string') {
-              t.source = 'remote'
-              t.path = thumbnail.file
+              obj.source = 'remote'
+              obj.path = thumbnail.file
             } else if (typeof thumbnail.file === 'object') {
-              t.source = 'local'
-              t.path = await saveFile(
+              obj.source = 'local'
+              obj.path = await saveFile(
                 thumbnail.file,
                 'admin/rentals/thumbnails'
               )
             }
-          }
-        } else {
-          const obj = {}
-          if (typeof thumbnail.file === 'string') {
-            obj.source = 'remote'
-            obj.path = thumbnail.file
-          } else if (typeof thumbnail.file === 'object') {
-            obj.source = 'local'
-            obj.path = await saveFile(
-              thumbnail.file,
-              'admin/rentals/thumbnails'
-            )
-          }
 
-          rental.thumbnails.push({ ...obj })
+            rental.thumbnails.push({ ...obj })
+          }
         }
       }
     }

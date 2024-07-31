@@ -49,10 +49,16 @@ const jobSchema = new Schema(
       es_type: 'text',
     },
     price: {
-      type: String,
+      type: Number,
       trim: true,
       es_indexed: true,
       es_type: 'float',
+    },
+    propertyType: {
+      type: String,
+      trim: true,
+      es_indexed: true,
+      es_type: 'keyword',
     },
     thumbnails: [
       {
@@ -77,6 +83,12 @@ const jobSchema = new Schema(
         },
       },
     ],
+    scrapingURLId: {
+      type: String,
+      index: true,
+      es_indexed: true,
+      es_type: 'keyword',
+    },
     subDomain: {
       type: String,
       required: true,
@@ -88,7 +100,6 @@ const jobSchema = new Schema(
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
       index: true,
       default: null,
       es_indexed: true,
@@ -101,6 +112,13 @@ const jobSchema = new Schema(
       default: null,
       es_indexed: true,
       es_type: 'keyword',
+    },
+    createdOn: {
+      type: Date,
+      index: true,
+      es_type: 'date',
+      es_indexed: true,
+      default: () => new Date(),
     },
     createdAt: {
       type: Date,

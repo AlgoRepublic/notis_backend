@@ -14,6 +14,7 @@ const create = aysncMiddleware(async (req, res, next) => {
     jobType,
     workplaceType,
     salary,
+    createdOn,
   } = req.body
   let job = await createJobService(connection, {
     locale: req.getLocale(),
@@ -25,6 +26,7 @@ const create = aysncMiddleware(async (req, res, next) => {
     jobType,
     workplaceType,
     salary,
+    createdOn,
     createdBy: req.currentUser._id.toString(),
     subDomain: req.subDomain,
     subDomainId: req.subDomainId.toString(),
@@ -42,6 +44,7 @@ const create = aysncMiddleware(async (req, res, next) => {
       jobType: 1,
       workplaceType: 1,
       salary: 1,
+      createdOn: 1,
     })
     .lean()
     .exec()

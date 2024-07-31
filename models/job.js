@@ -94,6 +94,13 @@ const jobSchema = new Schema(
       es_indexed: true,
       es_type: 'keyword',
     },
+    createdOn: {
+      type: Date,
+      index: true,
+      es_type: 'date',
+      es_indexed: true,
+      default: () => new Date(),
+    },
     createdAt: {
       type: Date,
       index: true,

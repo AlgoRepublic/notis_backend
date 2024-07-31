@@ -32,6 +32,7 @@ const show = aysncMiddleware(async (req, res, next) => {
       location: 1,
       summary: 1,
       price: 1,
+      propertyType: 1,
       thumbnails: 1,
     })
     .lean()
