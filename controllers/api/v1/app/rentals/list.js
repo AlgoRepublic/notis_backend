@@ -6,8 +6,9 @@ const { logError } = require('../../../../../utils/log')
 const list = aysncMiddleware(async (req, res, next) => {
   const connection = req.sdbConnection
   const { page, perPage } = pagyParams(req.query.page, req.query.perPage)
-  const { title, location, propertyType } = req.query
+  const { title, location } = req.query
   let { priceFrom, priceTo, createdOnFrom, createdOnTo } = req.query
+  let { propertyType } = req.query
 
   if (priceFrom) {
     priceFrom = parseFloat(priceFrom)
@@ -35,6 +36,12 @@ const list = aysncMiddleware(async (req, res, next) => {
 
   if (createdOnFrom && createdOnTo && createdOnFrom > createdOnTo) {
     ;[createdOnFrom, createdOnTo] = [createdOnTo, createdOnFrom]
+  }
+
+  if (propertyType) {
+    propertyType = propertyType.split(',').map((i) => i.trim())
+  } else {
+    propertyType = []
   }
 
   let rentals
@@ -76,7 +83,6 @@ const list = aysncMiddleware(async (req, res, next) => {
                     },
                   ]
                 : []),
-              ...(propertyType ? [{ term: { propertyType } }] : []),
               ...(priceFrom || priceTo
                 ? [
                     {
@@ -97,6 +103,23 @@ const list = aysncMiddleware(async (req, res, next) => {
                           ...(createdOnFrom ? { gte: createdOnFrom } : {}),
                           ...(createdOnTo ? { lte: createdOnTo } : {}),
                         },
+                      },
+                    },
+                  ]
+                : []),
+              ...(propertyType.length > 0
+                ? [
+                    {
+                      bool: {
+                        should: propertyType.map((i) => {
+                          return {
+                            term: {
+                              'propertyType.keyword': {
+                                value: i,
+                              },
+                            },
+                          }
+                        }),
                       },
                     },
                   ]

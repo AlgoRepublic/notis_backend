@@ -6,8 +6,9 @@ const { logError } = require('../../../../../utils/log')
 const list = aysncMiddleware(async (req, res, next) => {
   const connection = req.sdbConnection
   const { page, perPage } = pagyParams(req.query.page, req.query.perPage)
-  const { title, location, jobType, workplaceType } = req.query
+  const { title, location } = req.query
   let { salaryFrom, salaryTo, createdOnFrom, createdOnTo } = req.query
+  let { jobType, workplaceType } = req.query
 
   if (salaryFrom) {
     salaryFrom = parseFloat(salaryFrom)
@@ -35,6 +36,18 @@ const list = aysncMiddleware(async (req, res, next) => {
 
   if (createdOnFrom && createdOnTo && createdOnFrom > createdOnTo) {
     ;[createdOnFrom, createdOnTo] = [createdOnTo, createdOnFrom]
+  }
+
+  if (jobType) {
+    jobType = jobType.split(',').map((i) => i.trim())
+  } else {
+    jobType = []
+  }
+
+  if (workplaceType) {
+    workplaceType = workplaceType.split(',').map((i) => i.trim())
+  } else {
+    workplaceType = []
   }
 
   let jobs
@@ -82,8 +95,6 @@ const list = aysncMiddleware(async (req, res, next) => {
                     },
                   ]
                 : []),
-              ...(jobType ? [{ term: { jobType } }] : []),
-              ...(workplaceType ? [{ term: { workplaceType } }] : []),
               ...(createdOnFrom || createdOnTo
                 ? [
                     {
@@ -92,6 +103,40 @@ const list = aysncMiddleware(async (req, res, next) => {
                           ...(createdOnFrom ? { gte: createdOnFrom } : {}),
                           ...(createdOnTo ? { lte: createdOnTo } : {}),
                         },
+                      },
+                    },
+                  ]
+                : []),
+              ...(jobType.length > 0
+                ? [
+                    {
+                      bool: {
+                        should: jobType.map((i) => {
+                          return {
+                            term: {
+                              'jobType.keyword': {
+                                value: i,
+                              },
+                            },
+                          }
+                        }),
+                      },
+                    },
+                  ]
+                : []),
+              ...(workplaceType.length > 0
+                ? [
+                    {
+                      bool: {
+                        should: workplaceType.map((i) => {
+                          return {
+                            term: {
+                              'workplaceType.keyword': {
+                                value: i,
+                              },
+                            },
+                          }
+                        }),
                       },
                     },
                   ]
