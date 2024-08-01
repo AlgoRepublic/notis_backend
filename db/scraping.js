@@ -47,12 +47,12 @@ const seedAllData = async () => {
         params.subDomainId = subdomain._id.toString()
         params.scrapingURLId = url._id.toString()
         if (url.subdomain_type === 'job') {
-          params.jobType = url.job_type
-          params.workplaceType = url.type_of_workplace
+          params.jobType = url.job_type?.toLowerCase()
+          params.workplaceType = url.type_of_workplace?.toLowerCase()
           params.salary = url.salary
         }
         if (url.subdomain_type === 'rental') {
-          params.propertyType = url.property_type || ''
+          params.propertyType = url.property_type?.toLowerCase() || ''
           params.summary = url.summary
           params.price = url.price
           params.thumbnails = url.thumbnails
