@@ -159,6 +159,7 @@ const list = aysncMiddleware(async (req, res, next) => {
         jobType: job._source.jobType,
         workplaceType: job._source.workplaceType,
         salary: job._source.salary,
+        salaryCurrencySymbol: job._source.salaryCurrencySymbol,
         createdAt: job._source.createdAt,
         createdOn: job._source.createdOn,
         scrapingURLId: job._source.scrapingURLId,

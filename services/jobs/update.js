@@ -21,6 +21,7 @@ const update = async (dbConnection, params) => {
       updatedBy,
       subDomainId,
       createdOn,
+      salaryCurrencySymbol,
     } = params
 
     const schema = Joi.object({
@@ -33,6 +34,7 @@ const update = async (dbConnection, params) => {
       jobType: Joi.string().allow('').optional(),
       workplaceType: Joi.string().allow('').optional(),
       salary: Joi.number().optional(),
+      salaryCurrencySymbol: Joi.string().allow('').optional(),
       updatedBy: Joi.string().hex().length(24).optional(),
       subDomainId: Joi.string().hex().length(24).required(),
       createdOn: Joi.date().optional(),
@@ -48,6 +50,7 @@ const update = async (dbConnection, params) => {
       jobType,
       workplaceType,
       salary,
+      salaryCurrencySymbol,
       updatedBy,
       subDomainId,
       createdOn,
@@ -93,6 +96,10 @@ const update = async (dbConnection, params) => {
 
     if (salary !== undefined) {
       job.salary = salary
+    }
+
+    if (salaryCurrencySymbol !== undefined) {
+      job.salaryCurrencySymbol = salaryCurrencySymbol
     }
 
     if (createdOn !== undefined) {

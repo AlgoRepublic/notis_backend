@@ -50,11 +50,13 @@ const seedAllData = async () => {
           params.jobType = url.job_type?.toLowerCase()
           params.workplaceType = url.type_of_workplace?.toLowerCase()
           params.salary = url.salary
+          params.salaryCurrencySymbol = url.salary_currency_in_symbol
         }
         if (url.subdomain_type === 'rental') {
           params.propertyType = url.property_type?.toLowerCase() || ''
           params.summary = url.summary
           params.price = url.price
+          params.priceCurrencySymbol = url.price_currency_in_symbol
           params.thumbnails = url.thumbnails
         }
 

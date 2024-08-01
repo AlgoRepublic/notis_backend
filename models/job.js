@@ -64,6 +64,13 @@ const jobSchema = new Schema(
       es_indexed: true,
       es_type: 'float',
     },
+    salaryCurrencySymbol: {
+      type: String,
+      trim: true,
+      index: true,
+      es_indexed: true,
+      es_type: 'keyword',
+    },
     scrapingURLId: {
       type: String,
       index: true,

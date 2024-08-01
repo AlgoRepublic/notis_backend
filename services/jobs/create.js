@@ -17,6 +17,7 @@ const create = async (dbConnection, params) => {
       jobType,
       workplaceType,
       salary,
+      salaryCurrencySymbol,
       createdBy,
       subDomain,
       subDomainId,
@@ -33,6 +34,7 @@ const create = async (dbConnection, params) => {
       jobType: Joi.string().allow('').optional(),
       workplaceType: Joi.string().allow('').optional(),
       salary: Joi.number().optional(),
+      salaryCurrencySymbol: Joi.string().allow('').optional(),
       createdBy: Joi.string().hex().length(24).optional(),
       subDomain: Joi.string().required(),
       subDomainId: Joi.string().hex().length(24).required(),
@@ -54,6 +56,7 @@ const create = async (dbConnection, params) => {
       subDomainId,
       scrapingURLId,
       createdOn,
+      salaryCurrencySymbol,
     })
 
     if (error) {
@@ -85,6 +88,7 @@ const create = async (dbConnection, params) => {
       subDomain: subDomainId,
       scrapingURLId,
       createdOn,
+      salaryCurrencySymbol,
     })
 
     await job.save()

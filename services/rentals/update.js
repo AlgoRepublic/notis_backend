@@ -16,6 +16,7 @@ const update = async (dbConnection, params) => {
       location,
       url,
       price,
+      priceCurrencySymbol,
       summary,
       propertyType,
       thumbnails,
@@ -32,6 +33,7 @@ const update = async (dbConnection, params) => {
       location: Joi.string().optional(),
       url: Joi.string().optional(),
       price: Joi.number().optional(),
+      priceCurrencySymbol: Joi.string().allow('').optional(),
       summary: Joi.string().optional(),
       propertyType: Joi.string().allow('').optional(),
       thumbnails: Joi.array()
@@ -75,6 +77,7 @@ const update = async (dbConnection, params) => {
       location,
       url,
       price,
+      priceCurrencySymbol,
       summary,
       propertyType,
       thumbnails,
@@ -115,6 +118,10 @@ const update = async (dbConnection, params) => {
 
     if (price !== undefined) {
       rental.price = price
+    }
+
+    if (priceCurrencySymbol !== undefined) {
+      rental.priceCurrencySymbol = priceCurrencySymbol
     }
 
     if (summary !== undefined) {

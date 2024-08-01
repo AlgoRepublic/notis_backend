@@ -54,6 +54,13 @@ const jobSchema = new Schema(
       es_indexed: true,
       es_type: 'float',
     },
+    priceCurrencySymbol: {
+      type: String,
+      trim: true,
+      index: true,
+      es_indexed: true,
+      es_type: 'keyword',
+    },
     propertyType: {
       type: String,
       trim: true,
