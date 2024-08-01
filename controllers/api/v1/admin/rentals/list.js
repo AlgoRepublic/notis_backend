@@ -79,6 +79,7 @@ const list = aysncMiddleware(async (req, res, next) => {
       price: 1,
       propertyType: 1,
       thumbnails: 1,
+      createdOn: 1,
     })
     .sort(sortQuery)
     .skip((page - 1) * perPage)

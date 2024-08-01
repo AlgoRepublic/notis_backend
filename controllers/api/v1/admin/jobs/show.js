@@ -30,6 +30,10 @@ const show = aysncMiddleware(async (req, res, next) => {
       entity: 1,
       location: 1,
       url: 1,
+      jobType: 1,
+      workplaceType: 1,
+      salary: 1,
+      createdOn: 1,
     })
     .lean()
     .exec()
