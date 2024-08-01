@@ -41,6 +41,7 @@ connectAllDb().then(() => {
   app.listen(process.env.APP_PORT, async () => {
     firebaseInitialize()
     queue.process()
+    require('./cron')
 
     logInfo(
       `App listening on port ${process.env.APP_PORT} in ${process.env.NODE_ENV} environment`

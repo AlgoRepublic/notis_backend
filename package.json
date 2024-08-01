@@ -23,6 +23,7 @@
     "mongoosastic": "^5.0.0",
     "mongoose": "^7.2.0",
     "morgan": "^1.10.0",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.13",
     "vhost": "^3.0.2"
   },
