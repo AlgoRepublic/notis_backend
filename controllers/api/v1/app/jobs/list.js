@@ -66,7 +66,6 @@ const list = aysncMiddleware(async (req, res, next) => {
                       multi_match: {
                         query: title,
                         fields: ['title', 'description', 'entity'],
-                        fuzziness: 'auto',
                       },
                     },
                   ]
@@ -77,7 +76,7 @@ const list = aysncMiddleware(async (req, res, next) => {
                       match: {
                         location: {
                           query: location,
-                          fuzziness: 'auto',
+                          operator: 'and',
                         },
                       },
                     },
