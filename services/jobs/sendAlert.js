@@ -50,7 +50,6 @@ const sendAlert = async (dbConnection, params) => {
                         multi_match: {
                           query: search.title,
                           fields: ['title', 'description', 'entity'],
-                          fuzziness: 'auto',
                         },
                       },
                     ]
@@ -61,7 +60,7 @@ const sendAlert = async (dbConnection, params) => {
                         match: {
                           location: {
                             query: search.location,
-                            fuzziness: 'auto',
+                            operator: 'and',
                           },
                         },
                       },
