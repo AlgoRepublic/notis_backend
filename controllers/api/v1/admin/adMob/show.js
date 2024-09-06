@@ -26,6 +26,12 @@ const show = aysncMiddleware(async (req, res, next) => {
     .findOne({
       _id,
     })
+    .populate({
+      path: 'subDomains',
+      select: {
+        host: 1,
+      },
+    })
     .select({
       adType: 1,
       code: 1,

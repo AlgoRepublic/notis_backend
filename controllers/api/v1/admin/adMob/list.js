@@ -29,6 +29,10 @@ const list = aysncMiddleware(async (req, res, next) => {
   const adMob = await connection
     .model('AdMob')
     .find(query)
+    .populate({
+      path: 'subDomains',
+      select: { host: 1 },
+    })
     .select({ code: 1, adType: 1 })
     .sort(sortQuery)
     .skip((page - 1) * perPage)

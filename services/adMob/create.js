@@ -8,18 +8,20 @@ const create = async (dbConnection, params) => {
   try {
     const AdMob = await dbConnection.model('AdMob')
 
-    const { adType, code } = params
+    const { adType, code, subDomains } = params
 
     const schema = Joi.object({
       adType: Joi.string()
         .valid('Interstitial', 'Native', 'Rewarded', 'OpenAd')
         .required(),
       code: Joi.string().required(),
+      subDomains: Joi.array().items(Joi.string().hex().length(24)).required(),
     })
 
     const { error } = await joiValidate(schema, {
       adType,
       code,
+      subDomains,
     })
 
     if (error) {
@@ -29,6 +31,7 @@ const create = async (dbConnection, params) => {
     const adMob = new AdMob()
     adMob.adType = adType
     adMob.code = code
+    adMob.subDomains = subDomains
 
     await adMob.save()
 
