@@ -15,6 +15,12 @@ const adMobSchema = new Schema(
       trim: true,
       index: true,
     },
+    subDomains: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'SubDomain',
+      },
+    ],
   },
   {
     timestamps: true,
