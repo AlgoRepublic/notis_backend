@@ -1,19 +1,18 @@
-const createJobService = require('../jobs/create')
-const createRentalService = require('../rentals/create')
-const updateJobService = require('../jobs/update')
-const updateRentalService = require('../rentals/update')
-const {
-  connectAllDb,
-  getAdminConnection,
-  getScrapingConnection,
-  getConnectionBySubdomain,
-} = require('../../utils/connection-manager')
-const { logInfo, logError } = require('../../utils/log')
-const { CustomError } = require('../../utils/error')
-
 const sync = async () => {
   try {
-    await connectAllDb()
+    // await connectAllDb()
+    const createJobService = require('../jobs/create')
+    const createRentalService = require('../rentals/create')
+    const updateJobService = require('../jobs/update')
+    const updateRentalService = require('../rentals/update')
+    const {
+      // connectAllDb,
+      getAdminConnection,
+      getScrapingConnection,
+      getConnectionBySubdomain,
+    } = require('../../utils/connection-manager')
+    const { logInfo, logError } = require('../../utils/log')
+    const { CustomError } = require('../../utils/error')
 
     let successCount = 0
     let errorCount = 0
