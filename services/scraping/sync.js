@@ -1,24 +1,23 @@
 const sync = async () => {
+  // await connectAllDb()
+  const createJobService = require('../jobs/create')
+  const createRentalService = require('../rentals/create')
+  const updateJobService = require('../jobs/update')
+  const updateRentalService = require('../rentals/update')
+  const {
+    // connectAllDb,
+    getAdminConnection,
+    getScrapingConnection,
+    getConnectionBySubdomain,
+  } = require('../../utils/connection-manager')
+  const { logInfo, logError } = require('../../utils/log')
+  const { CustomError } = require('../../utils/error')
+  let successCount = 0
+  let errorCount = 0
+  let createCount = 0
+  let updateCount = 0
+
   try {
-    // await connectAllDb()
-    const createJobService = require('../jobs/create')
-    const createRentalService = require('../rentals/create')
-    const updateJobService = require('../jobs/update')
-    const updateRentalService = require('../rentals/update')
-    const {
-      // connectAllDb,
-      getAdminConnection,
-      getScrapingConnection,
-      getConnectionBySubdomain,
-    } = require('../../utils/connection-manager')
-    const { logInfo, logError } = require('../../utils/log')
-    const { CustomError } = require('../../utils/error')
-
-    let successCount = 0
-    let errorCount = 0
-    let createCount = 0
-    let updateCount = 0
-
     for await (const url of getScrapingConnection().model('URL').find()) {
       try {
         if (url.subdomain_id) {
@@ -60,7 +59,16 @@ const sync = async () => {
             params.salaryCurrencySymbol = url.salary_currency_in_symbol
           }
           if (url.subdomain_type === 'rental') {
-            params.propertyType = url.property_type?.toLowerCase() || ''
+            try {
+              if (Array.isArray(url.property_type)) {
+                params.propertyType = url.property_type[0]
+              } else {
+                params.propertyType = url.property_type?.toLowerCase()
+              }
+            } catch (error) {
+              params.propertyType = ''
+              logError('Error in rental sync: ', error)
+            }
             params.summary = url.summary
             params.price = url.price
             params.priceCurrencySymbol = url.price_currency_in_symbol
