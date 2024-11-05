@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const { aysncMiddleware } = require('../../../../../middlewares/async')
 const { successResponse } = require('../../../../../utils/response')
 
@@ -5,7 +6,7 @@ const list = aysncMiddleware(async (req, res, next) => {
   const connection = req.dbConnection
 
   const { adType, sort, sortAs } = req.query
-  const query = {}
+  const query = {subDomains: new mongoose.Types.ObjectId(req.subDomainId)}
   const sortQuery = {}
 
   if (adType) {
