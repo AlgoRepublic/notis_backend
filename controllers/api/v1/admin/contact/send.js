@@ -1,5 +1,9 @@
 const { aysncMiddleware } = require('../../../../../middlewares/async')
 const { sendEmail } = require('../../../../../utils/email')
+const {
+  successResponse,
+  errorResponse,
+} = require('../../../../../utils/response')
 
 const send = aysncMiddleware(async (req, res, next) => {
   const { first_name, last_name, email, message } = req.body
@@ -24,7 +28,12 @@ const send = aysncMiddleware(async (req, res, next) => {
     text: Textmessage,
   }
 
-  await sendEmail(res, emailOptions)
+  const result = await sendEmail(res, emailOptions)
+  if (result) {
+    return successResponse(res, 'Contact email sent successfully')
+  } else {
+    return errorResponse(res, 'Failed to send contact email')
+  }
 })
 
 module.exports = send

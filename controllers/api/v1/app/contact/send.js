@@ -1,9 +1,13 @@
 const { aysncMiddleware } = require('../../../../../middlewares/async')
 const { sendEmail } = require('../../../../../utils/email')
+const {
+  successResponse,
+  errorResponse,
+} = require('../../../../../utils/response')
 
 const send = aysncMiddleware(async (req, res, next) => {
   const { name, email, subject, message } = req.body
-  const Textmessage = `<div style="color:#000000"> 
+  const textmessage = `<div style="color:#000000">
                             <div style="display:flex;">
                                 <div style="min-width:8%"><strong>Name : </strong></div>
                                 <div>${name}</div>
@@ -25,10 +29,15 @@ const send = aysncMiddleware(async (req, res, next) => {
 
   const emailOptions = {
     subject: req.t('12'),
-    text: Textmessage,
+    text: textmessage,
   }
 
-  await sendEmail(res, emailOptions)
+  const result = await sendEmail(res, emailOptions)
+  if (result) {
+    return successResponse(res, 'Contact email sent successfully')
+  } else {
+    return errorResponse(res, 'Failed to send contact email')
+  }
 })
 
 module.exports = send
