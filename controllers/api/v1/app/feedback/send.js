@@ -9,13 +9,15 @@ const {
 } = require('../../../../../utils/response')
 
 const send = aysncMiddleware(async (req, res, next) => {
-  const { message } = req.body
+  const { rating, message } = req.body
 
   const schema = Joi.object({
+    rating: Joi.number().required(),
     message: Joi.string().required(),
   })
 
   const { error } = await joiValidate(schema, {
+    rating,
     message,
   })
 
@@ -25,6 +27,10 @@ const send = aysncMiddleware(async (req, res, next) => {
 
   const html = `
       <div style="color:#000000">
+        <div style="display:flex;">
+          <div style="min-width:8%"><strong>Rating : </strong></div>
+          <div>${rating}</div>
+        </div>
         <div style="display:flex;">
           <div style="min-width:8%"><strong>Feedback : </strong></div>
           <div>${message}</div>
