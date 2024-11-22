@@ -13,7 +13,7 @@ const send = aysncMiddleware(async (req, res, next) => {
 
   const schema = Joi.object({
     rating: Joi.number().required(),
-    message: Joi.string().required(),
+    message: Joi.string().allow('').optional(),
   })
 
   const { error } = await joiValidate(schema, {
@@ -33,7 +33,7 @@ const send = aysncMiddleware(async (req, res, next) => {
         </div>
         <div style="display:flex;">
           <div style="min-width:8%"><strong>Feedback : </strong></div>
-          <div>${message}</div>
+          <div>${message ? message : ''}</div>
         </div>
       <div>
     `
