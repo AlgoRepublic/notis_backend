@@ -17,6 +17,10 @@ const update = aysncMiddleware(async (req, res, next) => {
     termsOfUse,
     copyRightClaim,
     adsEnabled,
+    enAIText,
+    esAIText,
+    enFeedbackPopUpText,
+    esFeedbackPopUpText,
   } = req.body
 
   const { logo } = req.files || {}
