@@ -25,7 +25,9 @@ const update = async (dbConnection, params) => {
       enAIText,
       esAIText,
       enFeedbackPopUpText,
+      enFeedbackPopUpDescText,
       esFeedbackPopUpText,
+      esFeedbackPopUpDescText,
     } = params
 
     const schema = Joi.object({
@@ -48,7 +50,9 @@ const update = async (dbConnection, params) => {
       enAIText: Joi.string().optional(),
       esAIText: Joi.string().optional(),
       enFeedbackPopUpText: Joi.string().optional(),
+      enFeedbackPopUpDescText: Joi.string().optional(),
       esFeedbackPopUpText: Joi.string().optional(),
+      esFeedbackPopUpDescText: Joi.string().optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -67,7 +71,9 @@ const update = async (dbConnection, params) => {
       enAIText,
       esAIText,
       enFeedbackPopUpText,
+      enFeedbackPopUpDescText,
       esFeedbackPopUpText,
+      esFeedbackPopUpDescText,
     })
 
     if (error) {
@@ -158,8 +164,16 @@ const update = async (dbConnection, params) => {
       app.enFeedbackPopUpText = enFeedbackPopUpText
     }
 
+    if (enFeedbackPopUpDescText !== undefined) {
+      app.enFeedbackPopUpDescText = enFeedbackPopUpDescText
+    }
+
     if (esFeedbackPopUpText !== undefined) {
       app.esFeedbackPopUpText = esFeedbackPopUpText
+    }
+
+    if (esFeedbackPopUpDescText !== undefined) {
+      app.esFeedbackPopUpDescText = esFeedbackPopUpDescText
     }
 
     await app.save()

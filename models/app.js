@@ -92,6 +92,16 @@ const appSchema = new Schema(
       required: true,
       trim: true,
     },
+    enFeedbackPopUpDescText: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    esFeedbackPopUpDescText: {
+      type: String,
+      required: true,
+      trim: true,
+    },
   },
   {
     timestamps: true,

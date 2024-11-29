@@ -24,7 +24,9 @@ const create = async (dbConnection, params) => {
       enAIText,
       esAIText,
       enFeedbackPopUpText,
+      enFeedbackPopUpDescText,
       esFeedbackPopUpText,
+      esFeedbackPopUpDescText,
     } = params
 
     const schema = Joi.object({
@@ -46,7 +48,9 @@ const create = async (dbConnection, params) => {
       enAIText: Joi.string().required(),
       esAIText: Joi.string().required(),
       enFeedbackPopUpText: Joi.string().required(),
+      enFeedbackPopUpDescText: Joi.string().required(),
       esFeedbackPopUpText: Joi.string().required(),
+      esFeedbackPopUpDescText: Joi.string().required(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -64,7 +68,9 @@ const create = async (dbConnection, params) => {
       enAIText,
       esAIText,
       enFeedbackPopUpText,
+      enFeedbackPopUpDescText,
       esFeedbackPopUpText,
+      esFeedbackPopUpDescText,
     })
 
     if (error) {
@@ -98,7 +104,9 @@ const create = async (dbConnection, params) => {
       enAIText,
       esAIText,
       enFeedbackPopUpText,
+      enFeedbackPopUpDescText,
       esFeedbackPopUpText,
+      esFeedbackPopUpDescText,
     })
 
     await app.save()
