@@ -72,6 +72,26 @@ const appSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    enAIText: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    esAIText: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    enFeedbackPopUpText: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    esFeedbackPopUpText: {
+      type: String,
+      required: true,
+      trim: true,
+    },
   },
   {
     timestamps: true,

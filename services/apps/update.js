@@ -22,6 +22,10 @@ const update = async (dbConnection, params) => {
       copyRightClaim,
       logo,
       adsEnabled,
+      enAIText,
+      esAIText,
+      enFeedbackPopUpText,
+      esFeedbackPopUpText,
     } = params
 
     const schema = Joi.object({
@@ -41,6 +45,10 @@ const update = async (dbConnection, params) => {
       copyRightClaim: Joi.string().optional(),
       logo: Joi.object().optional(),
       adsEnabled: Joi.boolean().optional(),
+      enAIText: Joi.string().optional(),
+      esAIText: Joi.string().optional(),
+      enFeedbackPopUpText: Joi.string().optional(),
+      esFeedbackPopUpText: Joi.string().optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -56,6 +64,10 @@ const update = async (dbConnection, params) => {
       copyRightClaim,
       logo,
       adsEnabled,
+      enAIText,
+      esAIText,
+      enFeedbackPopUpText,
+      esFeedbackPopUpText,
     })
 
     if (error) {
@@ -132,6 +144,22 @@ const update = async (dbConnection, params) => {
 
     if (adsEnabled !== undefined) {
       app.adsEnabled = adsEnabled
+    }
+
+    if (enAIText !== undefined) {
+      app.enAIText = enAIText
+    }
+
+    if (esAIText !== undefined) {
+      app.esAIText = esAIText
+    }
+
+    if (enFeedbackPopUpText !== undefined) {
+      app.enFeedbackPopUpText = enFeedbackPopUpText
+    }
+
+    if (esFeedbackPopUpText !== undefined) {
+      app.esFeedbackPopUpText = esFeedbackPopUpText
     }
 
     await app.save()
