@@ -130,7 +130,7 @@ const create = async (dbConnection, params) => {
     await rental.save()
     await rental.addIndex()
 
-    queue.add(
+    await queue.add(
       'sendRentalAlert',
       {
         subDomain,

@@ -63,7 +63,7 @@ const importJobs = async (dbConnection, params) => {
         await job.save()
         await job.addIndex()
 
-        queue.add(
+        await queue.add(
           'sendJobAlert',
           {
             subDomain,

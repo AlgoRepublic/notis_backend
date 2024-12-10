@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const { ObjectId } = require('mongoose').Types
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { logError } = require('../../utils/log')
@@ -13,10 +14,11 @@ const sendAlert = async (dbConnection, params) => {
       throw new CustomError('No db connection')
     }
 
-    const { locale, _id, subDomainId } = params
+    const { locale, _id, subDomainId, searchId } = params
 
     const schema = Joi.object({
-      _id: Joi.string().hex().length(24).required(),
+      _id: Joi.string().hex().length(24).optional(),
+      searchId: Joi.string().hex().length(24).optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -27,7 +29,16 @@ const sendAlert = async (dbConnection, params) => {
       throw new CustomError(joiError(error))
     }
 
-    const searches = await dbConnection.model('Search').find().lean()
+    const searches = await dbConnection
+      .model('Search')
+      .find({
+        ...(searchId
+          ? {
+              _id: new ObjectId(searchId),
+            }
+          : {}),
+      })
+      .lean()
 
     for (const search of searches) {
       if (!search.title && !search.location) {
@@ -39,11 +50,15 @@ const sendAlert = async (dbConnection, params) => {
           query: {
             bool: {
               must: [
-                {
-                  ids: {
-                    values: [_id],
-                  },
-                },
+                ...(_id
+                  ? [
+                      {
+                        ids: {
+                          values: [_id],
+                        },
+                      },
+                    ]
+                  : []),
                 ...(search.title
                   ? [
                       {
@@ -76,50 +91,57 @@ const sendAlert = async (dbConnection, params) => {
       )
 
       if (jobs.statusCode === 200 && jobs.body.hits.total > 0) {
-        const job = jobs.body.hits.hits[0]
+        const hits = jobs.body.hits.hits
 
-        const alert = await dbConnection.model('Alert').findOneAndUpdate(
-          {
-            job: job._id,
-            device: search.device,
-          },
-          {
-            job: job._id,
-            device: search.device,
-          },
-          {
-            new: true,
-            upsert: true,
-            runValidators: true,
-            setDefaultsOnInsert: true,
-          }
-        )
-
-        await alert.save()
-
-        if (!alert.pushNotificationSent) {
+        for (const job of hits) {
           try {
-            const device = await dbConnection
-              .model('Device')
-              .findOne({ _id: search.device })
-              .lean()
-              .exec()
-
-            const message = {
-              data: {
-                jobId: job._id,
-                alertId: alert._id.toString(),
-                url: job._source.url,
+            const alert = await dbConnection.model('Alert').findOneAndUpdate(
+              {
+                job: job._id,
+                device: search.device,
               },
-              notification: {
-                title: translate('63', locale),
-                body: job._source.title,
+              {
+                job: job._id,
+                device: search.device,
               },
-              token: device.fcmToken,
-            }
+              {
+                new: true,
+                upsert: true,
+                runValidators: true,
+                setDefaultsOnInsert: true,
+              }
+            )
 
-            alert.pushNotificationSent = await firebaseSendNotification(message)
             await alert.save()
+
+            if (!alert.pushNotificationSent) {
+              try {
+                const device = await dbConnection
+                  .model('Device')
+                  .findOne({ _id: search.device })
+                  .lean()
+                  .exec()
+
+                const message = {
+                  data: {
+                    jobId: job._id,
+                    alertId: alert._id.toString(),
+                    url: job._source.url,
+                  },
+                  notification: {
+                    title: translate('63', locale),
+                    body: job._source.title,
+                  },
+                  token: device.fcmToken,
+                }
+
+                alert.pushNotificationSent =
+                  await firebaseSendNotification(message)
+                await alert.save()
+              } catch (error) {
+                logError(error)
+              }
+            }
           } catch (error) {
             logError(error)
           }
