@@ -1,9 +1,7 @@
 const nodemailer = require('nodemailer')
-const { successResponse, errorResponse } = require('./response')
 const { logError } = require('./log')
 
-const sendEmail = (res, options) => {
-  console.log('options', options)
+const sendEmail = async (res, options) => {
   const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_SERVICE,
     port: process.env.EMAIL_PORT,
@@ -13,7 +11,7 @@ const sendEmail = (res, options) => {
     },
   })
   const mailOptions = {
-    from: `AlgoRepublic <${process.env.EMAIL_ADDRESS}>`,
+    from: `NotisApp <${process.env.EMAIL_ADDRESS}>`,
     to: process.env.EMAIL_DEFAULT_TO,
     cc: process.env.EMAIL_DEFAULT_CC,
     bcc: process.env.EMAIL_DEFAULT_BCC,
@@ -21,15 +19,14 @@ const sendEmail = (res, options) => {
     html: options.text,
   }
 
-  transporter.sendMail(mailOptions, function (err) {
-    if (err) {
-      console.log('err', err)
-      logError(err)
-      return errorResponse(res, 'Unable to Send Email')
-    } else {
-      return successResponse(res, 'Thank you for contacting us')
-    }
-  })
+  try {
+    await transporter.sendMail(mailOptions)
+
+    return true
+  } catch (error) {
+    logError(error)
+    return false
+  }
 }
 
 module.exports = { sendEmail }

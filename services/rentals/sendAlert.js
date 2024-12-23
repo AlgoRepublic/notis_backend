@@ -1,4 +1,5 @@
 const Joi = require('joi')
+const { ObjectId } = require('mongoose').Types
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { logError } = require('../../utils/log')
@@ -13,10 +14,11 @@ const sendAlert = async (dbConnection, params) => {
       throw new CustomError('No db connection')
     }
 
-    const { locale, _id, subDomainId } = params
+    const { locale, _id, subDomainId, searchId } = params
 
     const schema = Joi.object({
-      _id: Joi.string().hex().length(24).required(),
+      _id: Joi.string().hex().length(24).optional(),
+      searchId: Joi.string().hex().length(24).optional(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -27,7 +29,16 @@ const sendAlert = async (dbConnection, params) => {
       throw new CustomError(joiError(error))
     }
 
-    const searches = await dbConnection.model('Search').find().lean()
+    const searches = await dbConnection
+      .model('Search')
+      .find({
+        ...(searchId
+          ? {
+              _id: new ObjectId(searchId),
+            }
+          : {}),
+      })
+      .lean()
 
     for (const search of searches) {
       if (!search.title && !search.location) {
@@ -39,11 +50,15 @@ const sendAlert = async (dbConnection, params) => {
           query: {
             bool: {
               must: [
-                {
-                  ids: {
-                    values: [_id],
-                  },
-                },
+                ...(_id
+                  ? [
+                      {
+                        ids: {
+                          values: [_id],
+                        },
+                      },
+                    ]
+                  : []),
                 ...(search.title
                   ? [
                       {
@@ -76,52 +91,55 @@ const sendAlert = async (dbConnection, params) => {
       )
 
       if (rentals.statusCode === 200 && rentals.body.hits.total > 0) {
-        const rental = rentals.body.hits.hits[0]
+        const hits = rentals.body.hits.hits
 
-        const alert = await dbConnection.model('Alert').findOneAndUpdate(
-          {
-            rental: rental._id,
-            device: search.device,
-          },
-          {
-            rental: rental._id,
-            device: search.device,
-          },
-          {
-            new: true,
-            upsert: true,
-            runValidators: true,
-            setDefaultsOnInsert: true,
-          }
-        )
-
-        await alert.save()
-
-        if (!alert.pushNotificationSent) {
-          try {
-            const device = await dbConnection
-              .model('Device')
-              .findOne({ _id: search.device })
-              .lean()
-              .exec()
-
-            const message = {
-              data: {
-                rentalId: rental._id,
-                alertId: alert._id.toString(),
-                url: rental._source.url,
-              },
-              notification: {
-                title: translate('70', locale),
-                body: rental._source.title,
-              },
-              token: device.fcmToken,
+        for (const rental of hits) {
+          const alert = await dbConnection.model('Alert').findOneAndUpdate(
+            {
+              rental: rental._id,
+              device: search.device,
+            },
+            {
+              rental: rental._id,
+              device: search.device,
+            },
+            {
+              new: true,
+              upsert: true,
+              runValidators: true,
+              setDefaultsOnInsert: true,
             }
+          )
 
-            alert.pushNotificationSent = await firebaseSendNotification(message)
-            await alert.save()
-          } catch (error) {
-            logError(error)
+          await alert.save()
+
+          if (!alert.pushNotificationSent) {
+            try {
+              const device = await dbConnection
+                .model('Device')
+                .findOne({ _id: search.device })
+                .lean()
+                .exec()
+
+              const message = {
+                data: {
+                  rentalId: rental._id,
+                  alertId: alert._id.toString(),
+                  url: rental._source.url,
+                },
+                notification: {
+                  title: translate('70', locale),
+                  body: rental._source.title,
+                },
+                token: device.fcmToken,
+              }
+
+              alert.pushNotificationSent =
+                await firebaseSendNotification(message)
+              await alert.save()
+            } catch (error) {
+              logError(error)
+            }
           }
         }
       }

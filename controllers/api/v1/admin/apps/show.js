@@ -38,6 +38,12 @@ const show = aysncMiddleware(async (req, res, next) => {
       copyRightClaim: 1,
       logo: 1,
       adsEnabled: 1,
+      enAIText: 1,
+      esAIText: 1,
+      enFeedbackPopUpText: 1,
+      enFeedbackPopUpDescText: 1,
+      esFeedbackPopUpText: 1,
+      esFeedbackPopUpDescText: 1,
     })
     .lean()
     .exec()

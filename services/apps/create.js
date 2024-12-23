@@ -21,6 +21,12 @@ const create = async (dbConnection, params) => {
       copyRightClaim,
       logo,
       adsEnabled,
+      enAIText,
+      esAIText,
+      enFeedbackPopUpText,
+      enFeedbackPopUpDescText,
+      esFeedbackPopUpText,
+      esFeedbackPopUpDescText,
     } = params
 
     const schema = Joi.object({
@@ -39,6 +45,12 @@ const create = async (dbConnection, params) => {
       copyRightClaim: Joi.string().required(),
       logo: Joi.object().required(),
       adsEnabled: Joi.boolean().required(),
+      enAIText: Joi.string().required(),
+      esAIText: Joi.string().required(),
+      enFeedbackPopUpText: Joi.string().required(),
+      enFeedbackPopUpDescText: Joi.string().required(),
+      esFeedbackPopUpText: Joi.string().required(),
+      esFeedbackPopUpDescText: Joi.string().required(),
     })
 
     const { error } = await joiValidate(schema, {
@@ -53,6 +65,12 @@ const create = async (dbConnection, params) => {
       copyRightClaim,
       logo,
       adsEnabled,
+      enAIText,
+      esAIText,
+      enFeedbackPopUpText,
+      enFeedbackPopUpDescText,
+      esFeedbackPopUpText,
+      esFeedbackPopUpDescText,
     })
 
     if (error) {
@@ -83,6 +101,12 @@ const create = async (dbConnection, params) => {
       copyRightClaim,
       logo: logoPath,
       adsEnabled,
+      enAIText,
+      esAIText,
+      enFeedbackPopUpText,
+      enFeedbackPopUpDescText,
+      esFeedbackPopUpText,
+      esFeedbackPopUpDescText,
     })
 
     await app.save()

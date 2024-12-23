@@ -17,6 +17,12 @@ const update = aysncMiddleware(async (req, res, next) => {
     termsOfUse,
     copyRightClaim,
     adsEnabled,
+    enAIText,
+    esAIText,
+    enFeedbackPopUpText,
+    enFeedbackPopUpDescText,
+    esFeedbackPopUpText,
+    esFeedbackPopUpDescText,
   } = req.body
 
   const { logo } = req.files || {}
@@ -35,6 +41,12 @@ const update = aysncMiddleware(async (req, res, next) => {
     copyRightClaim,
     logo,
     adsEnabled,
+    enAIText,
+    esAIText,
+    enFeedbackPopUpText,
+    enFeedbackPopUpDescText,
+    esFeedbackPopUpText,
+    esFeedbackPopUpDescText,
   })
 
   app = await connection
@@ -54,6 +66,12 @@ const update = aysncMiddleware(async (req, res, next) => {
       copyRightClaim: 1,
       logo: 1,
       adsEnabled: 1,
+      enAIText: 1,
+      esAIText: 1,
+      enFeedbackPopUpText: 1,
+      enFeedbackPopUpDescText: 1,
+      esFeedbackPopUpText: 1,
+      esFeedbackPopUpDescText: 1,
     })
     .lean()
     .exec()

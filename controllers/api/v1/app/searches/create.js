@@ -12,6 +12,8 @@ const create = aysncMiddleware(async (req, res, next) => {
     title,
     location,
     device: req.device?._id?.toString(),
+    subDomain: req.subDomain,
+    subDomainId: req.subDomainId.toString(),
   })
 
   search = await connection
