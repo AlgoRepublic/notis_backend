@@ -1,5 +1,5 @@
 const Joi = require('joi')
-const queue = require('../../utils/bull')
+// const queue = require('../../utils/bull')
 const { CustomError } = require('../../utils/error')
 const { joiValidate, joiError } = require('../../utils/joi')
 const { translate } = require('../../utils/i18n')
@@ -59,19 +59,19 @@ const create = async (dbConnection, params) => {
         { $addToSet: { searches: search._id } }
       )
 
-    if (subDomain && subDomainId) {
-      await queue.add('sendJobAlert', {
-        subDomain,
-        subDomainId,
-        searchId: search._id.toString(),
-      })
+    // if (subDomain && subDomainId) {
+    //   await queue.add('sendJobAlert', {
+    //     subDomain,
+    //     subDomainId,
+    //     searchId: search._id.toString(),
+    //   })
 
-      await queue.add('sendRentalAlert', {
-        subDomain,
-        subDomainId,
-        searchId: search._id.toString(),
-      })
-    }
+    //   await queue.add('sendRentalAlert', {
+    //     subDomain,
+    //     subDomainId,
+    //     searchId: search._id.toString(),
+    //   })
+    // }
 
     return search
   } catch (error) {
