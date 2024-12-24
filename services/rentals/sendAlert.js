@@ -47,6 +47,7 @@ const sendAlert = async (dbConnection, params) => {
 
       const rentals = await dbConnection.model('Rental').esSearch(
         {
+          size: 50000,
           query: {
             bool: {
               must: [

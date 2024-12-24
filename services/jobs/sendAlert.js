@@ -47,6 +47,7 @@ const sendAlert = async (dbConnection, params) => {
 
       const jobs = await dbConnection.model('Job').esSearch(
         {
+          size: 50000,
           query: {
             bool: {
               must: [
